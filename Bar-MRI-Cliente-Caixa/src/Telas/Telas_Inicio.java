@@ -5,6 +5,8 @@
  */
 package Telas;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author adson
@@ -13,7 +15,6 @@ public class Telas_Inicio extends javax.swing.JFrame {
     
     private Telas_Consumo consumo;
     private Telas_Cardapio cardapio;
-    private Telas_Estoque estoque;
 
     /**
      * Creates new form Inicio
@@ -22,7 +23,6 @@ public class Telas_Inicio extends javax.swing.JFrame {
         initComponents();
         consumo = new Telas_Consumo(this);
         cardapio = new Telas_Cardapio(this);
-        estoque = new Telas_Estoque(this);
     }
 
     /**
@@ -37,7 +37,6 @@ public class Telas_Inicio extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButtonCardapio = new javax.swing.JButton();
         jButtonConsumo = new javax.swing.JButton();
-        jButtonEstoque = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,7 +45,7 @@ public class Telas_Inicio extends javax.swing.JFrame {
 
         jButtonCardapio.setBackground(new java.awt.Color(120, 180, 125));
         jButtonCardapio.setForeground(new java.awt.Color(14, 63, 80));
-        jButtonCardapio.setText("CARDÁPIO");
+        jButtonCardapio.setText("ESTOQUE");
         jButtonCardapio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCardapioActionPerformed(evt);
@@ -62,29 +61,15 @@ public class Telas_Inicio extends javax.swing.JFrame {
             }
         });
 
-        jButtonEstoque.setBackground(new java.awt.Color(120, 180, 125));
-        jButtonEstoque.setForeground(new java.awt.Color(14, 63, 80));
-        jButtonEstoque.setText("ESTOQUE");
-        jButtonEstoque.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEstoqueActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButtonCardapio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonConsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jButtonEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(jButtonCardapio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonConsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -94,9 +79,7 @@ public class Telas_Inicio extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonCardapio, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                     .addComponent(jButtonConsumo, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jButtonEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -128,11 +111,6 @@ public class Telas_Inicio extends javax.swing.JFrame {
         getConsumo().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonConsumoActionPerformed
-
-    private void jButtonEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEstoqueActionPerformed
-        getEstoque().setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jButtonEstoqueActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,11 +147,15 @@ public class Telas_Inicio extends javax.swing.JFrame {
             }
         });
     }
+    
+    public static void gravarLog(String[][] produtos){
+        String[] colunas = new String[]{"Produto","Valor"};
+        DefaultTableModel modelo = new DefaultTableModel(produtos, colunas);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCardapio;
     private javax.swing.JButton jButtonConsumo;
-    private javax.swing.JButton jButtonEstoque;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
@@ -191,10 +173,4 @@ public class Telas_Inicio extends javax.swing.JFrame {
         return cardapio;
     }
 
-    /**
-     * @return the estoque
-     */
-    public Telas_Estoque getEstoque() {
-        return estoque;
-    }
 }
