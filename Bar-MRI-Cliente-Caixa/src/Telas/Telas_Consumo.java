@@ -5,7 +5,14 @@
  */
 package Telas;
 
-import Telas.Telas_Inicio;
+import java.awt.Color;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import modelos.Mesa;
 
 /**
  *
@@ -14,12 +21,23 @@ import Telas.Telas_Inicio;
 public class Telas_Consumo extends javax.swing.JFrame {
 
     private Telas_Inicio inicio;
+    private static String sTotalOld = "";
+    private static double total = 0;
+    private static ArrayList<Mesa> mesas = new ArrayList();
+
     /**
      * Creates new form Cardapio
      */
     public Telas_Consumo(Telas_Inicio inicio) {
         this.inicio = inicio;
         initComponents();
+        mesas.add(0, new Mesa("mesa1"));
+        gravarLog("cerveja", 5, 0);
+        gravarLog("pastel", 4.7, 0);
+        mesas.add(1, new Mesa("mesa2"));
+        gravarLog("whisky", 25, 1);
+        gravarLog("Hot Dog", 6.5, 1);
+        setarMesa(0);
     }
 
     /**
@@ -31,18 +49,14 @@ public class Telas_Consumo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaConsumo = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
         jButtonTelaInicial = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jComboBoxMesa = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPaneConsumo = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextAreaConsumo.setColumns(20);
-        jTextAreaConsumo.setRows(5);
-        jScrollPane1.setViewportView(jTextAreaConsumo);
 
         jButtonTelaInicial.setBackground(new java.awt.Color(120, 180, 125));
         jButtonTelaInicial.setForeground(new java.awt.Color(14, 63, 80));
@@ -57,23 +71,31 @@ public class Telas_Consumo extends javax.swing.JFrame {
         jComboBoxMesa.setBackground(new java.awt.Color(120, 180, 125));
         jComboBoxMesa.setForeground(new java.awt.Color(35, 120, 120));
         jComboBoxMesa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mesa 1", "Mesa 2", "Mesa 3", "Mesa 4" }));
+        jComboBoxMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxMesaActionPerformed(evt);
+            }
+        });
+
+        jTextPaneConsumo.setEditable(false);
+        jScrollPane2.setViewportView(jTextPaneConsumo);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                    .addComponent(jSeparator1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonTelaInicial))
-                    .addComponent(jSeparator2)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jComboBoxMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 292, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -84,7 +106,7 @@ public class Telas_Consumo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -100,16 +122,83 @@ public class Telas_Consumo extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButtonTelaInicialActionPerformed
 
-    
-    public void addProduto(){}
-    
+    private void jComboBoxMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMesaActionPerformed
+        setarMesa(jComboBoxMesa.getSelectedIndex());
+    }//GEN-LAST:event_jComboBoxMesaActionPerformed
+
+    private void setarMesa(int mesa) {
+        System.out.println(mesa);
+        SimpleAttributeSet set = new SimpleAttributeSet();
+        StyleConstants.setForeground(set, Color.BLUE);
+        StyleConstants.setFontFamily(set, "courier");
+
+        Document doc;
+        doc = jTextPaneConsumo.getStyledDocument();
+
+        try {
+            doc.remove(0, doc.getLength());
+            for (Mesa mesa1 : mesas) {
+                System.out.println(mesa1.getNome());
+            }
+            doc.insertString(0, mesas.get(mesa).getConsumo(), set);
+            StyleConstants.setForeground(set, Color.BLACK);
+        } catch (BadLocationException e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível realizar a gravação de log.\n"
+                    + "Mensagem a ser inserida: " + mesas.get(mesa).getConsumo() + "\n"
+                    + "Mensagem de erro: " + e.getMessage());
+        }
+    }
+
+    public static void gravarLog(String nome, double valor, int mesa) {
+        mesas.get(mesa).addConsumo(nome, valor);
+//        String sTotal = "Total";
+//        String sValor;
+//
+//        sValor = "R$" + String.format("%.2f", valor);
+//        total = total + valor;
+//
+//        for (int i = sTotal.length(); i < 50 - sValor.length(); i++) {
+//            sTotal = sTotal + "-";
+//        }
+//        sTotal = "\n\n" + sTotal + "R$" + String.format("%.2f", total);
+//
+//        SimpleAttributeSet set = new SimpleAttributeSet();
+//        StyleConstants.setForeground(set, corMensagem);
+//        StyleConstants.setFontFamily(set, "courier");
+//
+//        Document doc;
+//        doc = jTextPaneConsumo.getStyledDocument();
+//
+//        try {
+//            int j = mensagem.length();
+//            for (int i = j; i < 50 - sValor.length(); i++) {
+//                mensagem = mensagem + "-";
+//            }
+//            mensagem = mensagem + sValor;
+//
+//            if (!jTextPaneConsumo.getText().isEmpty()) {
+//                mensagem = jTextPaneConsumo.getText() + "\n" + mensagem;
+//                mensagem = mensagem.replace(sTotalOld, "");
+//            }
+//
+//            doc.remove(0, doc.getLength());
+//            doc.insertString(0, mensagem, set);
+//            doc.insertString(doc.getLength(), sTotal, set);
+//            sTotalOld = sTotal;
+//            StyleConstants.setForeground(set, Color.BLACK);
+//        } catch (BadLocationException e) {
+//            JOptionPane.showMessageDialog(null, "Não foi possível realizar a gravação de log.\n"
+//                    + "Mensagem a ser inserida: " + mensagem + "\n"
+//                    + "Mensagem de erro: " + e.getMessage());
+//        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonTelaInicial;
     private javax.swing.JComboBox<String> jComboBoxMesa;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextArea jTextAreaConsumo;
+    private static javax.swing.JTextPane jTextPaneConsumo;
     // End of variables declaration//GEN-END:variables
 }
