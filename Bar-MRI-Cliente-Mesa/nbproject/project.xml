@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>Bar-MRI-Cliente-Mesa</name>
+            <name>Bar-RMI-Cliente-Mesa</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

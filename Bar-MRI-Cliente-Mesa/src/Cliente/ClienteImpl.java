@@ -1,7 +1,7 @@
 package Cliente;
 
 import Interfaces.ServidorInterface;
-import Telas.Telas_Inicio;
+import Telas.Mesa_Telas_Inicio;
 import java.awt.Color;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
@@ -29,9 +29,9 @@ public class ClienteImpl extends UnicastRemoteObject implements ServidorInterfac
         String[] msg;
         msg = mensagem.trim().split("#");
         if (msg[0].contains("2")) {
-            Telas_Inicio.getCardapio().addProdudo();
+            Mesa_Telas_Inicio.getCardapio().addProdudo();
         }else if(msg[0].contains("3")){
-            Telas_Inicio.getConsumo().addProduto(msg[2], msg[3], msg[4], msg[5]);
+            Mesa_Telas_Inicio.getConsumo().addProduto(msg[2], msg[3], msg[4], msg[5]);
         }
     }
 }

@@ -19,16 +19,14 @@ import javax.swing.text.StyleConstants;
  */
 public class Mesa {
 
-    private static JTextPane jTPMesa;
-    private static String mesa;
-    private static String consumo;
-    private static double total = 0;
-    private static String geral;
+    private String mesa;
+    private String consumo;
+    private double total = 0;
+    private String geral;
 
     public Mesa(String mesa) {
         this.mesa = mesa;
         consumo = "";
-        jTPMesa = new JTextPane();
     }
 
     public void addConsumo(String nome, double valor) {
