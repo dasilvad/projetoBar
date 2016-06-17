@@ -12,7 +12,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import modelos.Mesa;
+import modelos.Caixa_Modelos_Mesa;
 
 /**
  *
@@ -23,7 +23,7 @@ public class Caixa_Telas_Consumo extends javax.swing.JFrame {
     private Caixa_Telas_Inicio inicio;
     private static String sTotalOld = "";
     private static double total = 0;
-    private static ArrayList<Mesa> mesas = new ArrayList<Mesa>();
+    private static ArrayList<Caixa_Modelos_Mesa> mesas = new ArrayList<Caixa_Modelos_Mesa>();
 
     /**
      * Creates new form Cardapio
@@ -31,8 +31,8 @@ public class Caixa_Telas_Consumo extends javax.swing.JFrame {
     public Caixa_Telas_Consumo(Caixa_Telas_Inicio inicio) {
         this.inicio = inicio;
         initComponents();
-        Mesa mesa1 = new Mesa("mesa1");
-        Mesa mesa2 = new Mesa("mesa2");
+        Caixa_Modelos_Mesa mesa1 = new Caixa_Modelos_Mesa("mesa1");
+        Caixa_Modelos_Mesa mesa2 = new Caixa_Modelos_Mesa("mesa2");
         mesas.add(mesa1);
         gravarLog("cerveja", 5, 0);
         gravarLog("pastel", 4.7, 0);
@@ -141,7 +141,7 @@ public class Caixa_Telas_Consumo extends javax.swing.JFrame {
 
         try {
             doc.remove(0, doc.getLength());
-            for (Mesa mesa1 : mesas) {
+            for (Caixa_Modelos_Mesa mesa1 : mesas) {
                 System.out.println(mesa1.getNome());
             }
             doc.insertString(0, mesas.get(mesa).getConsumo(), set);

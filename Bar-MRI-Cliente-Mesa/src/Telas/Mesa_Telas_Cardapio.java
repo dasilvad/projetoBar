@@ -5,13 +5,18 @@
  */
 package Telas;
 
-import java.awt.Button;
+import Interfaces.Servidor_Interface;
 import java.awt.GridLayout;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +31,7 @@ public class Mesa_Telas_Cardapio extends javax.swing.JFrame {
     private static DefaultTableModel modeloPratos;
     private static JTable tBebidas;
     private static JTable tPratos;
+    private Servidor_Interface servidor;
 
     /**
      * Creates new form Consumo
@@ -34,10 +40,11 @@ public class Mesa_Telas_Cardapio extends javax.swing.JFrame {
         this.inicio = inicio;
         initComponents();
         inicializarAbas();
-//        JComponent panelBebidas = makeTextPanel("Tudo as Bebida");
-//        jTabbedPaneCardapio.addTab("Bebidas", panelBebidas);
-//        JComponent panelPratos = makeTextPanel("Tudo as Comida");
-//        jTabbedPaneCardapio.addTab("Pratos", panelPratos);
+        try {
+            this.servidor = (Servidor_Interface) Naming.lookup("rmi://127.0.0.1:12345/Servidor");
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Logger.getLogger(Mesa_Telas_Cardapio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void inicializarAbas() {
@@ -130,19 +137,38 @@ public class Mesa_Telas_Cardapio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonTelaInicialActionPerformed
 
     private void jButtonPedirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirActionPerformed
-        if (tBebidas.getSelectedRow() != -1) {
+        if (tBebidas.getSelectedRow() != -1 || tPratos.getSelectedRow() != -1) {
+            String mensagem;
             String quantidade = JOptionPane.showInputDialog(null,
-                    "Concluir pedido.",
-                    "Digite a quantidade:");
-        } else if (tPratos.getSelectedRow() != -1) {
-            String quantidade = JOptionPane.showInputDialog(null,
-                    "Concluir pedido.",
-                    "Digite a quantidade:");
+                    "Digite a quantidade:",
+                    "Concluir Pedido",
+                    JOptionPane.QUESTION_MESSAGE);
+            if (tBebidas.getSelectedRow() != -1) {
+                mensagem = "2#0#"
+                        + tBebidas.getModel().getValueAt(tBebidas.getSelectedRow(), 0)
+                        + "#"
+                        + tBebidas.getModel().getValueAt(tBebidas.getSelectedRow(), 1)
+                        + "#"
+                        + quantidade;
+            } else {
+                mensagem = "2#0#"
+                        + tPratos.getModel().getValueAt(tBebidas.getSelectedRow(), 0)
+                        + "#"
+                        + tPratos.getModel().getValueAt(tBebidas.getSelectedRow(), 1)
+                        + "#"
+                        + quantidade;
+            }
+
+            try {
+                servidor.imprimirMensagem(quantidade);
+            } catch (RemoteException ex) {
+                Logger.getLogger(Mesa_Telas_Cardapio.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(null,
-                        "Pedido Inválido.",
-                        "Selecionar produto.",
-                        JOptionPane.ERROR_MESSAGE);
+                    "Pedido Inválido.",
+                    "Selecionar produto.",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_jButtonPedirActionPerformed

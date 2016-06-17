@@ -10,12 +10,12 @@ import java.rmi.*;
 
 /**
  *
- * @author Vinicius
+ * @author Adson
  */
 
 // Interface responsável por conter as assinaturas dos métodos remotos.
 // Obrigatóriamente esta interface deve herdar da classe Remote, esta do pacote RMI do Java.
-public interface ServidorInterface extends Remote {
+public interface Caixa_Interface extends Remote {
     
     // Método remoto
     // Todos os métodos remotos podem gerar uma exceção RemoteException

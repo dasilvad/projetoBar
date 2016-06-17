@@ -9,13 +9,13 @@ package modelos;
  *
  * @author adson
  */
-public class Produto {
+public class Caixa_Modelos_Produto {
     private String nome;
     private String categoria;
     private double preco;
     private int quantidade;
     
-    public Produto(String nome, String categoria, double preco){
+    public Caixa_Modelos_Produto(String nome, String categoria, double preco){
         this.nome = nome;
         this.categoria = categoria;
         this.preco = preco;

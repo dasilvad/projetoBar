@@ -5,8 +5,8 @@
  */
 package Telas;
 
-import modelos.Consumo;
-import modelos.Produto;
+import modelos.Modelos_Consumo;
+import modelos.Modelos_Produto;
 
 /**
  *
@@ -15,7 +15,7 @@ import modelos.Produto;
 public class Mesa_Telas_Consumo extends javax.swing.JFrame {
 
     private Mesa_Telas_Inicio inicio;
-    private Consumo consumo;
+    private Modelos_Consumo consumo;
 
     
     /**
@@ -23,7 +23,7 @@ public class Mesa_Telas_Consumo extends javax.swing.JFrame {
      */
     public Mesa_Telas_Consumo(Mesa_Telas_Inicio inicio) {
         this.inicio = inicio;
-        this.consumo = new Consumo();
+        this.consumo = new Modelos_Consumo();
         initComponents();
     }
 
@@ -93,7 +93,7 @@ public class Mesa_Telas_Consumo extends javax.swing.JFrame {
 
     
     public void addProduto(String nome, String categoria, String preco, String quantidade){
-        Produto produto = new Produto(nome, categoria, Double.parseDouble(preco));
+        Modelos_Produto produto = new Modelos_Produto(nome, categoria, Double.parseDouble(preco));
         produto.setQuantidade(Integer.parseInt(quantidade));
         consumo.addProduto(produto);
     }
