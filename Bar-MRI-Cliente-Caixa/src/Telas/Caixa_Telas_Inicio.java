@@ -14,15 +14,15 @@ import javax.swing.table.DefaultTableModel;
 public class Caixa_Telas_Inicio extends javax.swing.JFrame {
     
     private Caixa_Telas_Consumo consumo;
-    private Caixa_Telas_Cardapio cardapio;
-
+    private Caixa_Telas_Estoque cardapio;
+    
     /**
      * Creates new form Inicio
      */
     public Caixa_Telas_Inicio() {
         initComponents();
         consumo = new Caixa_Telas_Consumo(this);
-        cardapio = new Caixa_Telas_Cardapio(this);
+        cardapio = new Caixa_Telas_Estoque(this);
     }
 
     /**
@@ -35,22 +35,17 @@ public class Caixa_Telas_Inicio extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButtonCardapio = new javax.swing.JButton();
         jButtonConsumo = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuEstoque = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CAIXA", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(35, 120, 120))); // NOI18N
         jPanel1.setForeground(new java.awt.Color(35, 120, 120));
-
-        jButtonCardapio.setBackground(new java.awt.Color(120, 180, 125));
-        jButtonCardapio.setForeground(new java.awt.Color(14, 63, 80));
-        jButtonCardapio.setText("ESTOQUE");
-        jButtonCardapio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCardapioActionPerformed(evt);
-            }
-        });
 
         jButtonConsumo.setBackground(new java.awt.Color(120, 180, 125));
         jButtonConsumo.setForeground(new java.awt.Color(14, 63, 80));
@@ -66,21 +61,37 @@ public class Caixa_Telas_Inicio extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButtonCardapio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(155, 155, 155)
                 .addComponent(jButtonConsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonCardapio, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                    .addComponent(jButtonConsumo, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButtonConsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(204, Short.MAX_VALUE))
         );
+
+        jMenu1.setText("Gerenciar Estoque");
+
+        jMenuEstoque.setText("Estoque");
+        jMenuEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuEstoqueActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuEstoque);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Ajuda");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Sobre");
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,15 +113,15 @@ public class Caixa_Telas_Inicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonCardapioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCardapioActionPerformed
-        getCardapio().setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jButtonCardapioActionPerformed
-
     private void jButtonConsumoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsumoActionPerformed
         getConsumo().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonConsumoActionPerformed
+
+    private void jMenuEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEstoqueActionPerformed
+        getCardapio().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuEstoqueActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,8 +167,12 @@ public class Caixa_Telas_Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonCardapio;
     private javax.swing.JButton jButtonConsumo;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuEstoque;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
@@ -171,7 +186,7 @@ public class Caixa_Telas_Inicio extends javax.swing.JFrame {
     /**
      * @return the cardapio
      */
-    public Caixa_Telas_Cardapio getCardapio() {
+    public Caixa_Telas_Estoque getCardapio() {
         return cardapio;
     }
 
