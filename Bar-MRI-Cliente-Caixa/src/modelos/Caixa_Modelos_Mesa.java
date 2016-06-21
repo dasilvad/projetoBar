@@ -17,14 +17,14 @@ import javax.swing.text.StyleConstants;
  *
  * @author adson
  */
-public class Mesa {
+public class Caixa_Modelos_Mesa {
 
     private String mesa;
     private String consumo;
     private double total = 0;
     private String geral;
 
-    public Mesa(String mesa) {
+    public Caixa_Modelos_Mesa(String mesa) {
         this.mesa = mesa;
         consumo = "";
     }

@@ -1,8 +1,7 @@
-package Cliente;
+package Mesa;
 
-import Interfaces.ServidorInterface;
+import Interfaces.Mesa_Interface;
 import Telas.Mesa_Telas_Inicio;
-import java.awt.Color;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
 
@@ -13,12 +12,12 @@ import java.rmi.server.*;
  */
 /**
  *
- * @author Vinicius
+ * @author Adson
  */
 // Classe responsável pela implementação dos métodos remotos definidos pela Interface
-public class ClienteImpl extends UnicastRemoteObject implements ServidorInterface {
-
-    public ClienteImpl() throws RemoteException {
+public class Mesa_Impl extends UnicastRemoteObject implements Mesa_Interface {
+    
+    public Mesa_Impl() throws RemoteException {
 
         super();
     }
@@ -28,10 +27,8 @@ public class ClienteImpl extends UnicastRemoteObject implements ServidorInterfac
     public void imprimirMensagem(String mensagem) {
         String[] msg;
         msg = mensagem.trim().split("#");
-        if (msg[0].contains("2")) {
-            Mesa_Telas_Inicio.getCardapio().addProdudo();
-        }else if(msg[0].contains("3")){
-            Mesa_Telas_Inicio.getConsumo().addProduto(msg[2], msg[3], msg[4], msg[5]);
+        if (msg[0].contains("5")) {
+            Mesa_Telas_Inicio.setNumMesa(Integer.parseInt(msg[1]));
         }
     }
 }

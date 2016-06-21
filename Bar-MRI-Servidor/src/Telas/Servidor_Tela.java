@@ -5,17 +5,42 @@
  */
 package Telas;
 
+import Interfaces.Mesa_Interface;
+import Modelos.Servidor_Modelos_Mesa;
+import Modelos.Servidor_Modelos_Produto;
+import Servidor.Servidor;
+import java.awt.Color;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
 /**
  *
  * @author adson
  */
 public class Servidor_Tela extends javax.swing.JFrame {
 
+    private Servidor servidor;
+    private static Mesa_Interface mesaCliente;
+    private static ArrayList<Servidor_Modelos_Mesa> mesas = new ArrayList<Servidor_Modelos_Mesa>();
+    private static ArrayList<Servidor_Modelos_Produto> bebidas = new ArrayList<Servidor_Modelos_Produto>();
+    private static ArrayList<Servidor_Modelos_Produto> pratos = new ArrayList<Servidor_Modelos_Produto>();
     /**
      * Creates new form Servidor_Tela
      */
-    public Servidor_Tela() {
+    public Servidor_Tela() throws IOException {
         initComponents();
+        servidor = new Servidor();
     }
 
     /**
@@ -30,14 +55,14 @@ public class Servidor_Tela extends javax.swing.JFrame {
         jComboBoxMesas = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        jTextPaneServidor = new javax.swing.JTextPane();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jComboBoxMesas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mesa 1", "Mesa 2" }));
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane1.setViewportView(jTextPaneServidor);
 
         jButton1.setText("Desligar");
 
@@ -105,9 +130,54 @@ public class Servidor_Tela extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Servidor_Tela().setVisible(true);
+                try {
+                    new Servidor_Tela().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Servidor_Tela.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
+    }
+    
+    public static void incluirMesa(String mesa){
+        mesas.add(new Servidor_Modelos_Mesa(mesa));
+        try {
+            mesaCliente = (Mesa_Interface) Naming.lookup("rmi://127.0.0.1:" + mesa + "/Servidor");
+            mesaCliente.imprimirMensagem("5#" + mesas.size());
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Logger.getLogger(Servidor_Tela.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        gravarLog("Mesa " + mesas.size() +" está ativa.", Color.black);
+        
+    }
+    
+    public static void incluirPedido(String nome, double preco, int quantidade, int mesa){
+        mesas.get(mesa).addConsumo(nome, quantidade*preco);
+        gravarLog("Mesa " + mesa + " pediu " + quantidade + " " + nome + "." , Color.blue);
+    }
+    
+    public static void incluirProduto(String nome, String categoria, double preco, int quantidade){
+        if(categoria.equals("bebida")){
+            bebidas.add(new Servidor_Modelos_Produto(nome, categoria, preco, quantidade));
+        } else {
+            pratos.add(new Servidor_Modelos_Produto(nome, categoria, preco, quantidade));
+        }
+    }
+    
+    public static void gravarLog(String mensagem, Color corMensagem) {
+        SimpleAttributeSet set = new SimpleAttributeSet();
+        StyleConstants.setForeground(set, corMensagem);
+        Document doc;
+        doc = jTextPaneServidor.getStyledDocument();
+        
+        try {
+            doc.insertString(doc.getLength(), mensagem + "\n", set);
+            StyleConstants.setForeground(set, Color.BLACK);
+        } catch (BadLocationException e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível realizar a gravação de log.\n"
+                    + "Mensagem a ser inserida: " + mensagem + "\n"
+                    + "Mensagem de erro: " + e.getMessage());
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -115,6 +185,6 @@ public class Servidor_Tela extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxMesas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextPane jTextPane1;
+    private static javax.swing.JTextPane jTextPaneServidor;
     // End of variables declaration//GEN-END:variables
 }

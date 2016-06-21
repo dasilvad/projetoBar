@@ -11,11 +11,11 @@ import java.util.ArrayList;
  *
  * @author adson
  */
-public class Consumo {
-    private ArrayList<Produto> produtos = new ArrayList(); //Array
+public class Modelos_Consumo {
+    private ArrayList<Modelos_Produto> produtos = new ArrayList(); //Array
     private double total = 0;
     
-    public Consumo(){
+    public Modelos_Consumo(){
     }
 
     /**
@@ -24,14 +24,14 @@ public class Consumo {
 
     
     
-    public void addProduto(Produto produto){
+    public void addProduto(Modelos_Produto produto){
         produtos.add(produto);
     }
     /**
      * @return the total
      */
     public double getTotal() {
-        for (Produto produto : produtos) {
+        for (Modelos_Produto produto : produtos) {
             total = total + produto.getPreco() * produto.getQuantidade();
         }
         return total;

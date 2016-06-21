@@ -5,6 +5,9 @@
  */
 package Telas;
 
+import Mesa.Mesa;
+import Mesa.Mesa_Impl;
+
 /**
  *
  * @author adson
@@ -13,6 +16,9 @@ public class Mesa_Telas_Inicio extends javax.swing.JFrame {
 
     private static Mesa_Telas_Cardapio cardapio;
     private static Mesa_Telas_Consumo consumo;
+    private static Mesa mesa;
+    private static int numMesa;
+
     /**
      * Creates new form Inicio
      */
@@ -20,6 +26,8 @@ public class Mesa_Telas_Inicio extends javax.swing.JFrame {
         cardapio = new Mesa_Telas_Cardapio(this);
         consumo = new Mesa_Telas_Consumo(this);
         initComponents();
+        mesa = new Mesa();
+        mesa.Conectar();
     }
 
     /**
@@ -165,5 +173,13 @@ public class Mesa_Telas_Inicio extends javax.swing.JFrame {
      */
     public static Mesa_Telas_Consumo getConsumo() {
         return consumo;
+    }
+    
+    public static int getNumMesa() {
+        return numMesa;
+    }
+
+    public static void setNumMesa(int numMesa) {
+        Mesa_Telas_Inicio.numMesa = numMesa;
     }
 }
