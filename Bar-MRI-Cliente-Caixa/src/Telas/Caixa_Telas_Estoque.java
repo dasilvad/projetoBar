@@ -5,6 +5,8 @@
  */
 package Telas;
 
+import PacotePrincipal.*;
+import clienteCaixaPER.ProdutoPER;
 import java.awt.GridLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -20,11 +22,11 @@ import javax.swing.table.DefaultTableModel;
 public class Caixa_Telas_Estoque extends javax.swing.JFrame {
 
     private Caixa_Telas_Inicio inicio;
-    private static DefaultTableModel modeloBebidas;
-    private static DefaultTableModel modeloPratos;
+    private static DefaultTableModel tabelaBebidas;
+    private static DefaultTableModel tabelaPratos;
     private static JTable tBebidas;
     private static JTable tPratos;
-    private String acao;//Acao pode ser: "editar" ou "salvar"
+    private String acao = "novo";//Acao pode ser: "editar" ou "novo"
     /**
      * Creates new form Consumo
      */
@@ -33,8 +35,8 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
 
         initComponents();
         inicializarAbas();
-        gravarLog("Bebida", "Coca Cola", 3.56, 75);
-        gravarLog("Prato", "Cheese Burguer", 8.70, 30);
+        mostrarEstoqueNaTela("Bebida", "Coca Cola", 3.56, 75);
+        mostrarEstoqueNaTela("Prato", "Cheese Burguer", 8.70, 30);
 //        JComponent panelBebidas = makeTextPanel("Tudo as Bebida");
 //        jTabbedPaneCardapio.addTab("Bebidas", panelBebidas);
 //        JComponent panelPratos = makeTextPanel("Tudo as Comida");
@@ -51,19 +53,19 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         String[][] dadosPratos = {{"Hot Dog", "6,70", "40"},
         {"porção Fritas", "14,50", "50"}};
 
-        modeloBebidas = new DefaultTableModel(dadosBebidas, colunas);
-        modeloPratos = new DefaultTableModel(dadosPratos, colunas);
-        tBebidas = new JTable(modeloBebidas);
-        tPratos = new JTable(modeloPratos);
+        tabelaBebidas = new DefaultTableModel(dadosBebidas, colunas);
+        tabelaPratos = new DefaultTableModel(dadosPratos, colunas);
+        tBebidas = new JTable(tabelaBebidas);
+        tPratos = new JTable(tabelaPratos);
         jTabbedPaneCardapio.add("Bebidas", tBebidas);
         jTabbedPaneCardapio.add("Pratos", tPratos);
     }
 
-    public static void gravarLog(String tab, String nome, double preco, int quantidade) {
-        if (tab.equals("Bebida")) {
-            modeloBebidas.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade)});
+    public static void mostrarEstoqueNaTela(String categoria, String nome, double preco, int quantidade) {
+        if (categoria.equals("Bebida")) {
+            tabelaBebidas.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade)});
         } else {
-            modeloPratos.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade)});
+            tabelaPratos.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade)});
         }
     }
 
@@ -130,6 +132,11 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         });
 
         jBEditarProduto.setText("Editar");
+        jBEditarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEditarProdutoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -209,7 +216,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
                         "Operação Inválida",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                modeloBebidas.removeRow(tBebidas.getSelectedRow());
+                tabelaBebidas.removeRow(tBebidas.getSelectedRow());
             }
         } else if (jTabbedPaneCardapio.getSelectedIndex() == 1) {
             if (tPratos.getSelectedRow() == -1) {
@@ -218,18 +225,27 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
                         "Operação Inválida",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                modeloPratos.removeRow(tPratos.getSelectedRow());
+                tabelaPratos.removeRow(tPratos.getSelectedRow());
             }
         }
     }//GEN-LAST:event_jBDeletarProdutoActionPerformed
 
     private void jBSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalvarProdutoActionPerformed
         if (acao.equals("novo")){
-            String produto = this.jTextFieldNome.getText();
+            String nome = this.jTextFieldNome.getText();
             String categoria = this.jComboBoxCategoria.getSelectedItem().toString();
-            String preco = this.jTextFieldPreco.getText();
-            String quantidade = this.jTextFieldQuantidade.getText();
+            float preco = Float.valueOf(this.jTextFieldPreco.getText());
+            int quantidade = Integer.parseInt(this.jTextFieldQuantidade.getText());
+            Produto produto = new Produto (nome, categoria, preco, quantidade);
             
+            ProdutoPER produtoPER = new ProdutoPER();
+            if (produtoPER.inserirProduto(produto)){
+                mostrarEstoqueNaTela(categoria, nome, preco, quantidade);
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+            }
+        }else if (acao.equals("editar")){
+            System.out.println("editar not implemented yet!");
         }
     }//GEN-LAST:event_jBSalvarProdutoActionPerformed
 
@@ -239,6 +255,10 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         this.jTextFieldPreco.setText("");
         this.jTextFieldQuantidade.setText("");
     }//GEN-LAST:event_jBNovoProdutoActionPerformed
+
+    private void jBEditarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEditarProdutoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBEditarProdutoActionPerformed
 
     public void addProdudo() {
     }
