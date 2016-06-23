@@ -20,7 +20,7 @@ public class ProdutoPER {
     public boolean inserirProduto(Produto produto) throws RemoteException{
         MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
         
-        return m.conectar().inserirProdutoNoBanco("produto teste");
+        return m.conectar().inserirProdutoNoBanco(produto);
             
     }
     

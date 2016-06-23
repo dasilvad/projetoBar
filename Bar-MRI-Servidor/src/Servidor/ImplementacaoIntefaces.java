@@ -1,7 +1,6 @@
-package Caixa;
-
-
+package Servidor;
 import Interfaces.EstoqueInterface;
+import PacotePrincipal.Produto;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
 
@@ -17,18 +16,14 @@ import java.rmi.server.*;
  */
 
 // Classe responsável pela implementação dos métodos remotos definidos pela Interface
-public class EstoqueImpl extends UnicastRemoteObject implements EstoqueInterface {
+public class ImplementacaoIntefaces extends UnicastRemoteObject implements EstoqueInterface {
     
-    public EstoqueImpl() throws RemoteException {
+    public ImplementacaoIntefaces() throws RemoteException {
         
         super();
     }
 
-    @Override
-    public boolean inserirProdutoNoBanco(String produto) throws RemoteException {
-        System.out.println("Inserido no banco");
-        return true;
-    }
+    
 
     @Override
     public boolean atualizarProdutoNoBanco(String produto) throws RemoteException {
@@ -38,6 +33,12 @@ public class EstoqueImpl extends UnicastRemoteObject implements EstoqueInterface
     @Override
     public boolean buscarProdutosDoBanco() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean inserirProdutoNoBanco(Produto produto) {
+        System.out.println(produto.getNome());
+        return true;
     }
 
    
