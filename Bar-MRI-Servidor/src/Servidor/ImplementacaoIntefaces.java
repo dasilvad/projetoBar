@@ -4,6 +4,7 @@ import PacotePrincipal.Produto;
 import ServidorPER.ProdutoPER;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
+import java.util.ArrayList;
 
 
 /*
@@ -40,6 +41,12 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Estoq
     public boolean inserirProdutoNoBanco(Produto produto) {
         ProdutoPER produtoPER = new ProdutoPER();
         return produtoPER.inserirProduto(produto);
+    }
+
+    @Override
+    public ArrayList<Produto> buscarProdutos() {
+        ProdutoPER produtoPER = new ProdutoPER();
+        return produtoPER.buscarProdutos();
     }
 
    

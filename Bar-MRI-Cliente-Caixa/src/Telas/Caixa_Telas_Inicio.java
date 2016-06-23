@@ -120,7 +120,7 @@ public class Caixa_Telas_Inicio extends javax.swing.JFrame {
 
     private void jMenuEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEstoqueActionPerformed
         getCardapio().setVisible(true);
-        this.setVisible(false);
+        
     }//GEN-LAST:event_jMenuEstoqueActionPerformed
 
     /**

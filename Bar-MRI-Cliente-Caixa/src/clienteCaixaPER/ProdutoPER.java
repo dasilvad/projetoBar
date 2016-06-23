@@ -8,6 +8,7 @@ package clienteCaixaPER;
 import Caixa.MetodoRemotoDoServidor;
 import PacotePrincipal.Produto;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,12 +20,16 @@ public class ProdutoPER {
     
     public boolean inserirProduto(Produto produto) throws RemoteException{
         MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
-        
         return m.conectar().inserirProdutoNoBanco(produto);
             
     }
     
     public boolean atualizarProduto(Produto produto){
         return false;
+    }
+    
+    public ArrayList<Produto> buscarProdutos() throws RemoteException {
+        MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
+        return m.conectar().buscarProdutos();
     }
 }

@@ -9,6 +9,7 @@ import PacotePrincipal.*;
 import clienteCaixaPER.ProdutoPER;
 import java.awt.GridLayout;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -59,6 +60,18 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         tPratos = new JTable(tabelaPratos);
         jTabbedPaneCardapio.add("Bebidas", tBebidas);
         jTabbedPaneCardapio.add("Pratos", tPratos);
+        
+        ProdutoPER produtoPER = new ProdutoPER();
+        try {
+            ArrayList<Produto> produto = produtoPER.buscarProdutos();
+            
+            for (int i=0; i < produto.size(); i++){
+                this.mostrarEstoqueNaTela(produto.get(i).getCategoria(), produto.get(i).getNome(), produto.get(i).getPreco(), produto.get(i).getQuantidade());
+            }
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar dados");
+        }
+        
     }
 
     public static void mostrarEstoqueNaTela(String categoria, String nome, double preco, int quantidade) {
@@ -93,7 +106,20 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         jBNovoProduto = new javax.swing.JButton();
         jBEditarProduto = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Estoque");
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
 
         jLabel1.setForeground(new java.awt.Color(30, 120, 120));
         jLabel1.setText("Nome:");
@@ -266,8 +292,15 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jBEditarProdutoActionPerformed
 
-    public void addProdudo() {
-    }
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formFocusGained
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    
 
     protected JComponent makeTextPanel(String text) {
         JPanel panel = new JPanel(true);
