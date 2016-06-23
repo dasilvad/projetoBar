@@ -15,9 +15,8 @@ import java.rmi.*;
 
 // Interface responsável por conter as assinaturas dos métodos remotos.
 // Obrigatóriamente esta interface deve herdar da classe Remote, esta do pacote RMI do Java.
-public interface Mesa_Interface extends Remote {
-    
-    // Método remoto
-    // Todos os métodos remotos podem gerar uma exceção RemoteException
-    void imprimirMensagem(String mensagem) throws RemoteException;
+public interface EstoqueInterface extends Remote {
+    public boolean inserirProdutoNoBanco(String produto) throws RemoteException;
+    public boolean atualizarProdutoNoBanco(String produto) throws RemoteException;
+    public boolean buscarProdutosDoBanco() throws RemoteException;
 }

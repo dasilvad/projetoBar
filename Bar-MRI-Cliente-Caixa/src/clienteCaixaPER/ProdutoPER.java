@@ -5,15 +5,23 @@
  */
 package clienteCaixaPER;
 
+import Caixa.MetodoRemotoDoServidor;
 import PacotePrincipal.Produto;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author daniel
  */
 public class ProdutoPER {
-    public boolean inserirProduto(Produto produto){
-        return true;
+    
+    public boolean inserirProduto(Produto produto) throws RemoteException{
+        MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
+        
+        return m.conectar().inserirProdutoNoBanco("produto teste");
+            
     }
     
     public boolean atualizarProduto(Produto produto){

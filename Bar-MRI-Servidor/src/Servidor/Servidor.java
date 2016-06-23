@@ -1,7 +1,8 @@
 package Servidor;
 
 
-import Interfaces.Servidor_Interface;
+import Caixa.EstoqueImpl;
+
 import java.io.IOException;
 import java.rmi.Naming;
 import sun.rmi.registry.RegistryImpl;
@@ -18,24 +19,25 @@ import sun.rmi.registry.RegistryImpl;
 public class Servidor {
     
 
-    public Servidor() throws IOException {
+    public Servidor(){
         try {
             // Registrando o serviço em uma determinada porta.
             RegistryImpl registryImpl = new RegistryImpl(12345);    
         
             // Instanciando a classe Servidor_Impl que é do tipo ServidorInterface.
-            Servidor_Interface servidor = new Servidor_Impl();    
+            EstoqueImpl servidor = new EstoqueImpl();    
             
             // Possibilitando que a instância contendo métodos remotos fique visível aos clientes. Além do IP e PORTA, deve-se associar um nome a instância.
             // Parâmetros: String (IP, Porta e nome do serviço) e Objeto com métodos remotos.
-            Naming.rebind("rmi://127.0.0.1:12345/Servidor", servidor); 
-            
-            
-            
+            Naming.rebind("rmi://127.0.0.1:12345/servicoServidor", servidor); 
+
             
         } catch (Exception e) {
             
             System.out.println("Erro: " + e.getMessage());
         }
+    }
+    public static void main(String[] args){
+        new Servidor();
     }
 }

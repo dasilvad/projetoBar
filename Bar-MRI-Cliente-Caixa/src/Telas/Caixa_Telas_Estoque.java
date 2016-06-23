@@ -8,6 +8,9 @@ package Telas;
 import PacotePrincipal.*;
 import clienteCaixaPER.ProdutoPER;
 import java.awt.GridLayout;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -239,10 +242,16 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
             Produto produto = new Produto (nome, categoria, preco, quantidade);
             
             ProdutoPER produtoPER = new ProdutoPER();
-            if (produtoPER.inserirProduto(produto)){
-                mostrarEstoqueNaTela(categoria, nome, preco, quantidade);
-            }else{
-                JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+            
+            try {
+                if (produtoPER.inserirProduto(produto)){
+                    mostrarEstoqueNaTela(categoria, nome, preco, quantidade);
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(Caixa_Telas_Estoque.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else if (acao.equals("editar")){
             System.out.println("editar not implemented yet!");
