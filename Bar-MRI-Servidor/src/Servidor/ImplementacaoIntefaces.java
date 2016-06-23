@@ -1,6 +1,7 @@
 package Servidor;
 import Interfaces.EstoqueInterface;
 import PacotePrincipal.Produto;
+import ServidorPER.ProdutoPER;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
 
@@ -37,8 +38,8 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Estoq
 
     @Override
     public boolean inserirProdutoNoBanco(Produto produto) {
-        System.out.println(produto.getNome());
-        return true;
+        ProdutoPER produtoPER = new ProdutoPER();
+        return produtoPER.inserirProduto(produto);
     }
 
    

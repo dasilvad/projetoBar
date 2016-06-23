@@ -38,8 +38,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
 
         initComponents();
         inicializarAbas();
-        mostrarEstoqueNaTela("Bebida", "Coca Cola", 3.56, 75);
-        mostrarEstoqueNaTela("Prato", "Cheese Burguer", 8.70, 30);
+        
 //        JComponent panelBebidas = makeTextPanel("Tudo as Bebida");
 //        jTabbedPaneCardapio.addTab("Bebidas", panelBebidas);
 //        JComponent panelPratos = makeTextPanel("Tudo as Comida");
@@ -50,11 +49,9 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
     public void inicializarAbas() {
         String[] colunas = {"Produto", "Valor", "Quantidade"};
 
-        String[][] dadosBebidas = {{"cerveja", "3,57", "150"},
-        {"refrigerante", "2,50", "70"}};
+        String[][] dadosBebidas = {};
 
-        String[][] dadosPratos = {{"Hot Dog", "6,70", "40"},
-        {"porção Fritas", "14,50", "50"}};
+        String[][] dadosPratos = {};
 
         tabelaBebidas = new DefaultTableModel(dadosBebidas, colunas);
         tabelaPratos = new DefaultTableModel(dadosPratos, colunas);
@@ -237,7 +234,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         if (acao.equals("novo")){
             String nome = this.jTextFieldNome.getText();
             String categoria = this.jComboBoxCategoria.getSelectedItem().toString();
-            float preco = Float.valueOf(this.jTextFieldPreco.getText());
+            float preco = Float.parseFloat(this.jTextFieldPreco.getText());
             int quantidade = Integer.parseInt(this.jTextFieldQuantidade.getText());
             Produto produto = new Produto (nome, categoria, preco, quantidade);
             
@@ -246,7 +243,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
             try {
                 if (produtoPER.inserirProduto(produto)){
                     mostrarEstoqueNaTela(categoria, nome, preco, quantidade);
-                    
+                    JOptionPane.showMessageDialog(null, "Produto Inserido com Sucesso!");
                 }else{
                     JOptionPane.showMessageDialog(null, "Erro ao Salvar");
                 }
