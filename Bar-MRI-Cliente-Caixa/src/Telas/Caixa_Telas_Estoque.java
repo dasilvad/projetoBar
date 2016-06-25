@@ -7,9 +7,11 @@ package Telas;
 
 import PacotePrincipal.*;
 import clienteCaixaPER.ProdutoPER;
+import clienteCaixaRN.ProdutoRN;
 import java.awt.GridLayout;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -31,6 +33,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
     private static JTable tBebidas;
     private static JTable tPratos;
     private String acao = "novo";//Acao pode ser: "editar" ou "novo"
+    ArrayList<Produto> produto;//armazena o estoque para mostrar na tela
     /**
      * Creates new form Consumo
      */
@@ -48,25 +51,38 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
     }
 
     public void inicializarAbas() {
-        String[] colunas = {"Produto", "Valor", "Quantidade"};
+        String[] colunas = {"Produto", "Valor", "Quantidade", "id"};
 
         String[][] dadosBebidas = {};
 
         String[][] dadosPratos = {};
+        
 
         tabelaBebidas = new DefaultTableModel(dadosBebidas, colunas);
         tabelaPratos = new DefaultTableModel(dadosPratos, colunas);
+        
+        
+        
+        //System.out.println(tabelaBebidas.getColumnClass(3).);
+        
+        
         tBebidas = new JTable(tabelaBebidas);
         tPratos = new JTable(tabelaPratos);
+        
+        tBebidas.getColumn("id").setPreferredWidth(0);
+        tBebidas.getColumn("id").setMinWidth(0);
+        tBebidas.getColumn("id").setWidth(0);
+        tBebidas.getColumn("id").setMaxWidth(0);
+        
         jTabbedPaneCardapio.add("Bebidas", tBebidas);
         jTabbedPaneCardapio.add("Pratos", tPratos);
         
         ProdutoPER produtoPER = new ProdutoPER();
         try {
-            ArrayList<Produto> produto = produtoPER.buscarProdutos();
+            this.produto = produtoPER.buscarProdutos();
             
             for (int i=0; i < produto.size(); i++){
-                this.mostrarEstoqueNaTela(produto.get(i).getCategoria(), produto.get(i).getNome(), produto.get(i).getPreco(), produto.get(i).getQuantidade());
+                this.mostrarEstoqueNaTela(produto.get(i).getCategoria(), produto.get(i).getNome(), produto.get(i).getPreco(), produto.get(i).getQuantidade(), String.valueOf(produto.get(i).getId()));
             }
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao buscar dados");
@@ -74,11 +90,11 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         
     }
 
-    public static void mostrarEstoqueNaTela(String categoria, String nome, double preco, int quantidade) {
+    public static void mostrarEstoqueNaTela(String categoria, String nome, double preco, int quantidade, String id) {
         if (categoria.equals("Bebida")) {
-            tabelaBebidas.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade)});
+            tabelaBebidas.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade), id});
         } else {
-            tabelaPratos.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade)});
+            tabelaPratos.addRow(new String[]{nome, String.format("%.2f", preco), String.valueOf(quantidade), id});
         }
     }
 
@@ -105,6 +121,9 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         jBSalvarProduto = new javax.swing.JButton();
         jBNovoProduto = new javax.swing.JButton();
         jBEditarProduto = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Estoque");
@@ -120,6 +139,8 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
                 formFocusGained(evt);
             }
         });
+
+        jTabbedPaneCardapio.setAutoscrolls(true);
 
         jLabel1.setForeground(new java.awt.Color(30, 120, 120));
         jLabel1.setText("Nome:");
@@ -164,6 +185,12 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Produto");
+
+        jLabel5.setText("Preço");
+
+        jLabel6.setText("Quantidade");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,13 +210,22 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jComboBoxCategoria, 0, 166, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextFieldPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(55, 55, 55)
+                                        .addComponent(jLabel5)
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel6)))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jBDeletarProduto)
@@ -216,7 +252,12 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
                     .addComponent(jTextFieldPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPaneCardapio, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -238,43 +279,71 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         if (jTabbedPaneCardapio.getSelectedIndex() == 0) {
             if (tBebidas.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null,
-                        "Selecionar produto à ser deletado.",
+                        "Selecione um produto",
                         "Operação Inválida",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                tabelaBebidas.removeRow(tBebidas.getSelectedRow());
+                ProdutoRN prn = new ProdutoRN();
+                int id_produto = Integer.parseInt((String) tBebidas.getValueAt(tBebidas.getSelectedRow(), 3));
+                if (prn.deletarProduto(id_produto)){
+                    tabelaBebidas.removeRow(tBebidas.getSelectedRow());
+                }else{
+                    JOptionPane.showMessageDialog(null,
+                        "Erro ao deletar Produto!.",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+                                            
             }
+           
         } else if (jTabbedPaneCardapio.getSelectedIndex() == 1) {
             if (tPratos.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null,
-                        "Selecionar produto à ser deletado.",
+                        "Selecione um produto",
                         "Operação Inválida",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                tabelaPratos.removeRow(tPratos.getSelectedRow());
+                ProdutoRN prn = new ProdutoRN();
+                int id_produto = Integer.parseInt((String) tPratos.getValueAt(tPratos.getSelectedRow(), 3));
+                if (prn.deletarProduto(id_produto)){
+                    tabelaPratos.removeRow(tPratos.getSelectedRow());
+                }else{
+                    JOptionPane.showMessageDialog(null,
+                        "Erro ao deletar Produto!.",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }//GEN-LAST:event_jBDeletarProdutoActionPerformed
 
     private void jBSalvarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalvarProdutoActionPerformed
         if (acao.equals("novo")){
-            String nome = this.jTextFieldNome.getText();
-            String categoria = this.jComboBoxCategoria.getSelectedItem().toString();
-            float preco = Float.parseFloat(this.jTextFieldPreco.getText());
-            int quantidade = Integer.parseInt(this.jTextFieldQuantidade.getText());
-            Produto produto = new Produto (nome, categoria, preco, quantidade);
             
-            ProdutoPER produtoPER = new ProdutoPER();
-            
-            try {
-                if (produtoPER.inserirProduto(produto)){
-                    mostrarEstoqueNaTela(categoria, nome, preco, quantidade);
+            try{
+                String nome = this.jTextFieldNome.getText();
+                String categoria = this.jComboBoxCategoria.getSelectedItem().toString();
+                float preco = Float.parseFloat(this.jTextFieldPreco.getText());
+                int quantidade = Integer.parseInt(this.jTextFieldQuantidade.getText());
+                Produto produto = new Produto (nome, categoria, preco, quantidade);
+                ProdutoRN produtoRN = new ProdutoRN();
+
+                //-2: campos nao preenchidos incorretamente
+                //-1: erro ao salvar no banco de dados
+                // >=0: chave primaria do produto inserido
+                int codigo = produtoRN.inserirProduto(produto);
+
+                if (codigo >=0){
+                    mostrarEstoqueNaTela(categoria, nome, preco, quantidade, String.valueOf(codigo));
                     JOptionPane.showMessageDialog(null, "Produto Inserido com Sucesso!");
-                }else{
-                    JOptionPane.showMessageDialog(null, "Erro ao Salvar");
+                }else if (codigo == -1){
+                     JOptionPane.showMessageDialog(null, "Erro ao Salvar no banco de dados. Tente novamente.");
+                }else if (codigo == -2){
+                     JOptionPane.showMessageDialog(null, "Campos invalidos");
                 }
-            } catch (RemoteException ex) {
-                Logger.getLogger(Caixa_Telas_Estoque.class.getName()).log(Level.SEVERE, null, ex);
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null, "Campos invalidos");
+                return;
             }
         }else if (acao.equals("editar")){
             System.out.println("editar not implemented yet!");
@@ -320,6 +389,9 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPaneCardapio;

@@ -18,10 +18,9 @@ import java.util.logging.Logger;
  */
 public class ProdutoPER {
     
-    public boolean inserirProduto(Produto produto) throws RemoteException{
+    public int inserirProduto(Produto produto) throws RemoteException{
         MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
         return m.conectar().inserirProdutoNoBanco(produto);
-            
     }
     
     public boolean atualizarProduto(Produto produto){
@@ -31,5 +30,14 @@ public class ProdutoPER {
     public ArrayList<Produto> buscarProdutos() throws RemoteException {
         MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
         return m.conectar().buscarProdutos();
+    }
+
+    public boolean deletarProduto(int id_produto) {
+        MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
+        try {
+            return m.conectar().deletarProduto(id_produto);
+        } catch (RemoteException ex) {
+           return false;
+        }
     }
 }

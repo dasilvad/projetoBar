@@ -38,7 +38,7 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Estoq
     }
 
     @Override
-    public boolean inserirProdutoNoBanco(Produto produto) {
+    public int inserirProdutoNoBanco(Produto produto) {
         ProdutoPER produtoPER = new ProdutoPER();
         return produtoPER.inserirProduto(produto);
     }
@@ -47,6 +47,12 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Estoq
     public ArrayList<Produto> buscarProdutos() {
         ProdutoPER produtoPER = new ProdutoPER();
         return produtoPER.buscarProdutos();
+    }
+
+    @Override
+    public boolean deletarProduto(int id_produto) {
+        ProdutoPER produtoPER = new ProdutoPER();
+        return produtoPER.deletarProduto(id_produto);
     }
 
    

@@ -16,7 +16,8 @@ public class Produto implements Serializable{
     private String categoria;
     private float preco;
     private int quantidade;
-
+    private int id;
+            
     public Produto(String nome, String categoria, float preco, int quantidade) {
         this.nome = nome;
         this.categoria = categoria;
@@ -30,7 +31,13 @@ public class Produto implements Serializable{
     public String getNome() {
         return nome;
     }
-
+    
+    public int getId(){
+        return this.id;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
     /**
      * @param nome the nome to set
      */

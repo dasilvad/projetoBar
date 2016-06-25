@@ -20,16 +20,22 @@ import java.util.ArrayList;
 public class ProdutoPER {
     private Connection con=null;
     
-    public boolean inserirProduto(Produto produto){
-        PreparedStatement pst;
+    public int inserirProduto(Produto produto){
+        PreparedStatement stm;
         con=Connect.getInstace().connectDB();         
         try{    
-        String sql = "insert into produto(nome,categoria,preco_venda,quantidade,status)values('" + produto.getNome() + "','" + produto.getCategoria() + "'," + produto.getPreco() + "," + produto.getQuantidade()+ ","+"'ativo')";
-        pst = con.prepareStatement(sql);
-        pst.execute();
-        return true;
+        String sql = "insert into produto(nome,categoria,preco_venda,quantidade,status)values('" + produto.getNome() + "','" + produto.getCategoria() + "'," + produto.getPreco() + "," + produto.getQuantidade()+ ","+"'ativo') RETURNING id_produto";
+        stm = con.prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        int last_id_produto = -1;
+        if (rs.next()){
+           last_id_produto = rs.getInt(1);
+        }
+        
+        return last_id_produto;
+        
         }catch(Exception e){
-            return false;
+            return -1;
         }
     }
 
@@ -47,6 +53,7 @@ public class ProdutoPER {
             while (rs.next()){
                 Produto p;
                 p = new Produto(rs.getString("nome"), rs.getString("categoria"), rs.getFloat("preco_venda"), rs.getInt("quantidade"));
+                p.setId(rs.getInt("id_produto"));
                 System.out.println(p.getNome());
                 lista.add(p);                
             }
@@ -55,4 +62,19 @@ public class ProdutoPER {
         }
         return lista;
     }
+
+    public boolean deletarProduto(int id_produto) {
+        try{
+            PreparedStatement pst;
+            con=Connect.getInstace().connectDB();
+            String sql= "delete from produto where id_produto = "+id_produto;        
+            pst=con.prepareStatement(sql);
+            pst.executeUpdate();
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    
 }
