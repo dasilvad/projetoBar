@@ -3,6 +3,8 @@ package Telas;
 import PacotePrincipal.Produto;
 import clienteMesaRN.ProdutoRN;
 import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -16,19 +18,20 @@ import javax.swing.table.DefaultTableModel;
  * @author daniel
  */
 public class TelaInicioMesa extends javax.swing.JFrame {
-    private DefaultTableModel tabelaBebida;
-    private DefaultTableModel tabelaComida;
+    private DefaultTableModel modelBebida;
+    private DefaultTableModel modelComida;
+    private DefaultTableModel modelPedido;
     private String usuario;
     /**
      * Creates new form TelaInicioMesa
      */
     public TelaInicioMesa() {
         initComponents();
-        this.tabelaBebida = new DefaultTableModel();
-        tabelaBebida.addColumn("Bebida");
-        tabelaBebida.addColumn("Preco");
-        tabelaBebida.addColumn("id");
-        this.jTableBebidas.setModel(this.tabelaBebida);
+        this.modelBebida = new DefaultTableModel();
+        modelBebida.addColumn("Bebida");
+        modelBebida.addColumn("Preco");
+        modelBebida.addColumn("id");
+        this.jTableBebidas.setModel(this.modelBebida);
         
         //hide the id in table Bebidas
         this.jTableBebidas.getColumn("id").setPreferredWidth(0);
@@ -36,11 +39,11 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         this.jTableBebidas.getColumn("id").setWidth(0);
         this.jTableBebidas.getColumn("id").setMaxWidth(0);
         
-        this.tabelaComida = new DefaultTableModel();
-        this.tabelaComida.addColumn("Comida");
-        this.tabelaComida.addColumn("Preco");
-        this.tabelaComida.addColumn("id");
-        this.jTableComidas.setModel(this.tabelaComida);
+        this.modelComida = new DefaultTableModel();
+        this.modelComida.addColumn("Comida");
+        this.modelComida.addColumn("Preco");
+        this.modelComida.addColumn("id");
+        this.jTableComidas.setModel(this.modelComida);
         
         //hide id in table Comida
         this.jTableComidas.getColumn("id").setPreferredWidth(0);
@@ -48,7 +51,19 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         this.jTableComidas.getColumn("id").setWidth(0);
         this.jTableComidas.getColumn("id").setMaxWidth(0);
         
+        this.modelPedido = new DefaultTableModel();
+        this.modelPedido.addColumn("Item");
+        this.modelPedido.addColumn("Preco Unitário");
+        this.modelPedido.addColumn("Quantidade");
+        this.modelPedido.addColumn("Subtotal");
+        this.modelPedido.addColumn("id");
+        this.jTablePedido.setModel(this.modelPedido);
         
+        //hide the id in table Pedido
+        this.jTablePedido.getColumn("id").setPreferredWidth(0);
+        this.jTablePedido.getColumn("id").setMinWidth(0);
+        this.jTablePedido.getColumn("id").setWidth(0);
+        this.jTablePedido.getColumn("id").setMaxWidth(0);
         
         this.buscarCardapio();
     }
@@ -62,7 +77,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jTabbedPaneCardapio = new javax.swing.JTabbedPane();
         tabBebidas = new javax.swing.JScrollPane();
         jTableBebidas = new javax.swing.JTable();
         tabComidas = new javax.swing.JScrollPane();
@@ -73,7 +88,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelCardapio = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTablePedido = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -103,7 +118,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         });
         tabBebidas.setViewportView(jTableBebidas);
 
-        jTabbedPane1.addTab("Bebidas", tabBebidas);
+        jTabbedPaneCardapio.addTab("Bebidas", tabBebidas);
 
         jTableComidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -133,9 +148,9 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         });
         tabComidas.setViewportView(jTableComidas);
 
-        jTabbedPane1.addTab("Comidas", tabComidas);
+        jTabbedPaneCardapio.addTab("Comidas", tabComidas);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 68, 438, 330));
+        getContentPane().add(jTabbedPaneCardapio, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 68, 438, 330));
 
         jButtonIncluir.setText("Pedir");
         jButtonIncluir.addActionListener(new java.awt.event.ActionListener() {
@@ -158,7 +173,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabel1.setText("Pedido");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(791, 42, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTablePedido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -184,11 +199,11 @@ public class TelaInicioMesa extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane2.setViewportView(jTablePedido);
+        if (jTablePedido.getColumnModel().getColumnCount() > 0) {
+            jTablePedido.getColumnModel().getColumn(0).setResizable(false);
+            jTablePedido.getColumnModel().getColumn(1).setResizable(false);
+            jTablePedido.getColumnModel().getColumn(2).setResizable(false);
         }
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 98, -1, 300));
@@ -211,7 +226,34 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
-       // this.tabelaBebida.setR
+       if (jTableBebidas.getSelectedRow() != -1 && jTabbedPaneCardapio.getSelectedIndex() == 0){//usuario clicou em alguma linha
+          Vector a =  (Vector) modelBebida.getDataVector().elementAt(jTableBebidas.getSelectedRow());
+          String quantidade = this.jSpinnerQuantidade.getValue().toString();
+          String item = a.get(0).toString();
+          String precoUnitario = a.get(1).toString();
+          String id = a.get(2).toString();
+          
+          float subtotal =Integer.parseInt(quantidade) * Float.parseFloat(precoUnitario);
+          
+          this.modelPedido.addRow(new String [] {item, precoUnitario, quantidade, String.valueOf(subtotal), id});
+           System.out.println();
+       }else if (jTableComidas.getSelectedRow() != -1 && jTabbedPaneCardapio.getSelectedIndex() == 1) {
+            if (jTableComidas.getSelectedRow() != -1){//usuario clicou em alguma linha
+                Vector a =  (Vector) modelComida.getDataVector().elementAt(jTableComidas.getSelectedRow());
+                String quantidade = this.jSpinnerQuantidade.getValue().toString();
+                String item = a.get(0).toString();
+                String precoUnitario = a.get(1).toString();
+                String id = a.get(2).toString();
+
+                float subtotal =Integer.parseInt(quantidade) * Float.parseFloat(precoUnitario);
+
+                this.modelPedido.addRow(new String [] {item, precoUnitario, quantidade, String.valueOf(subtotal), id});
+                 System.out.println();
+            }
+       
+       }else{
+           
+       }
     }//GEN-LAST:event_jButtonIncluirActionPerformed
 
     /**
@@ -260,10 +302,10 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelQuantidade;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinnerQuantidade;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTabbedPane jTabbedPaneCardapio;
     private javax.swing.JTable jTableBebidas;
     private javax.swing.JTable jTableComidas;
+    private javax.swing.JTable jTablePedido;
     private javax.swing.JScrollPane tabBebidas;
     private javax.swing.JScrollPane tabComidas;
     // End of variables declaration//GEN-END:variables
@@ -280,9 +322,9 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     
     public void mostrarCardapioNaTela(String nome, float preco, String categoria, String id){
        if (categoria.equals("Bebida")) {
-            this.tabelaBebida.addRow(new String[]{nome, String.format("%.2f", preco), id});
+            this.modelBebida.addRow(new String[]{nome, String.format("%.2f", preco), id});
         } else {
-            this.tabelaComida.addRow(new String[]{nome, String.format("%.2f", preco), id});
+            this.modelComida.addRow(new String[]{nome, String.format("%.2f", preco), id});
         }
     }
 
