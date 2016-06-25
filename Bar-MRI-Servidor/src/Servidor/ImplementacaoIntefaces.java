@@ -28,8 +28,9 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Estoq
     
 
     @Override
-    public boolean atualizarProdutoNoBanco(String produto) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean atualizarProduto(Produto produto) throws RemoteException {
+        ProdutoPER produtoPER = new ProdutoPER();
+        return produtoPER.atualizarProduto(produto);
     }
 
     @Override

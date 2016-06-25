@@ -24,7 +24,12 @@ public class ProdutoPER {
     }
     
     public boolean atualizarProduto(Produto produto){
-        return false;
+        MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
+        try {
+            return m.conectar().atualizarProduto(produto);
+        } catch (RemoteException ex) {
+            return false;
+        }
     }
     
     public ArrayList<Produto> buscarProdutos() throws RemoteException {

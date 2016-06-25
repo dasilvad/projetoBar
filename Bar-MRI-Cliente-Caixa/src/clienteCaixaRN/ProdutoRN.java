@@ -45,5 +45,15 @@ public class ProdutoRN {
             return false;
         }
     }
+
+    public boolean atualizarProduto(Produto produto) {
+        if (produto.getNome().equals("") || produto.getCategoria().equals("") || produto.getQuantidade() < 1){
+            return false;
+        }else{
+            ProdutoPER produtoPER = new ProdutoPER();
+            return produtoPER.atualizarProduto(produto);
+        }
+        
+    }
     
 }

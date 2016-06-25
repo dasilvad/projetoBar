@@ -346,7 +346,28 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
                 return;
             }
         }else if (acao.equals("editar")){
-            System.out.println("editar not implemented yet!");
+            String nome = this.jTextFieldNome.getText();
+            String categoria = this.jComboBoxCategoria.getSelectedItem().toString();
+            float preco = Float.parseFloat(this.jTextFieldPreco.getText());
+            int quantidade = Integer.parseInt(this.jTextFieldQuantidade.getText());
+            Produto produto = new Produto (nome, categoria, preco, quantidade);
+            int id_produto = Integer.parseInt((String) tBebidas.getValueAt(tBebidas.getSelectedRow(), 3));
+            produto.setId(id_produto);
+            
+            
+            
+            
+            ProdutoRN produtoRN = new ProdutoRN();
+            if (produtoRN.atualizarProduto(produto)){
+                    tBebidas.setValueAt(nome, tBebidas.getSelectedRow(),0);
+                    tBebidas.setValueAt(String.valueOf(preco), tBebidas.getSelectedRow(),1);
+                    tBebidas.setValueAt(String.valueOf(quantidade), tBebidas.getSelectedRow(),2);
+            }else{
+                JOptionPane.showMessageDialog(null,
+                        "Erro ao atualizar. Verifique se os campos estão corretos.",
+                        "Operação Inválida",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jBSalvarProdutoActionPerformed
 
@@ -358,7 +379,39 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_jBNovoProdutoActionPerformed
 
     private void jBEditarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEditarProdutoActionPerformed
-        // TODO add your handling code here:
+        if (jTabbedPaneCardapio.getSelectedIndex() == 0) {
+            if (tBebidas.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(null,
+                        "Selecione um produto",
+                        "Operação Inválida",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+               this.jTextFieldNome.setText((String) tBebidas.getValueAt(tBebidas.getSelectedRow(), 0));
+               this.jTextFieldPreco.setText((String) tBebidas.getValueAt(tBebidas.getSelectedRow(), 1));
+               this.jTextFieldQuantidade.setText((String) tBebidas.getValueAt(tBebidas.getSelectedRow(), 2));
+               this.jComboBoxCategoria.setSelectedIndex(0);
+               //------------------------
+               
+               this.acao = "editar";
+                                            
+            }
+           
+        } else if (jTabbedPaneCardapio.getSelectedIndex() == 1) {
+            if (tPratos.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(null,
+                        "Selecione um produto",
+                        "Operação Inválida",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                this.jTextFieldNome.setText((String) tPratos.getValueAt(tPratos.getSelectedRow(), 0));
+                this.jTextFieldPreco.setText((String) tPratos.getValueAt(tPratos.getSelectedRow(), 1));
+                this.jTextFieldQuantidade.setText((String) tPratos.getValueAt(tPratos.getSelectedRow(), 2));
+                this.jComboBoxCategoria.setSelectedIndex(1);
+                //------------------------
+               
+                this.acao = "editar";
+            }
+        }
     }//GEN-LAST:event_jBEditarProdutoActionPerformed
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained

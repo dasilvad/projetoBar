@@ -19,7 +19,7 @@ import java.util.ArrayList;
 // Obrigatóriamente esta interface deve herdar da classe Remote, esta do pacote RMI do Java.
 public interface EstoqueInterface extends Remote {
     public int inserirProdutoNoBanco(Produto produto) throws RemoteException;
-    public boolean atualizarProdutoNoBanco(String produto) throws RemoteException;
+    public boolean atualizarProduto(Produto produto) throws RemoteException;
     public boolean buscarProdutosDoBanco() throws RemoteException;
     public ArrayList<Produto> buscarProdutos() throws RemoteException;
     public boolean deletarProduto(int id_produto) throws RemoteException;

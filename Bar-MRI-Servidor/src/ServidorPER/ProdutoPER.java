@@ -76,5 +76,20 @@ public class ProdutoPER {
             return false;
         }
     }
+
+    public boolean atualizarProduto(Produto produto) {
+        try{
+            
+            PreparedStatement pst;
+            con=Connect.getInstace().connectDB();
+            String sql= "update produto set nome='"+produto.getNome()+"', categoria='"+ produto.getCategoria() + "', preco_venda=" + produto.getPreco() +", quantidade="+ produto.getQuantidade()+" where id_produto = "+produto.getId();        
+            pst=con.prepareStatement(sql);
+            pst.executeUpdate();
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
     
 }
