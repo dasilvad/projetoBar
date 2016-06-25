@@ -23,4 +23,5 @@ public interface ServidorInterface extends Remote {
     public boolean buscarProdutosDoBanco() throws RemoteException;
     public ArrayList<Produto> buscarProdutos() throws RemoteException;
     public boolean deletarProduto(int id_produto) throws RemoteException;
+    public boolean logar(String usuario) throws RemoteException;
 }

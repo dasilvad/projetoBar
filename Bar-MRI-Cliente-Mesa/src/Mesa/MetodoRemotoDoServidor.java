@@ -24,8 +24,8 @@ public class MetodoRemotoDoServidor {
     private String PORTA = "12345";
     public ServidorInterface conectar(){
         try {
-            ServidorInterface estoqueInterface = (ServidorInterface) Naming.lookup("//localhost:"+ this.PORTA+"/"+this.NOME_SERVICO);
-            return estoqueInterface;
+            ServidorInterface servidorInterface = (ServidorInterface) Naming.lookup("//localhost:"+ this.PORTA+"/"+this.NOME_SERVICO);
+            return servidorInterface;
         } catch (NotBoundException ex) {
             Logger.getLogger(MetodoRemotoDoServidor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {

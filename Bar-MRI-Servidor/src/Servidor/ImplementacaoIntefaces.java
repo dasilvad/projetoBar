@@ -1,6 +1,8 @@
 package Servidor;
+
 import Interfaces.ServidorInterface;
 import PacotePrincipal.Produto;
+import ServidorPER.LoginPER;
 import ServidorPER.ProdutoPER;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
@@ -23,9 +25,7 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
     public ImplementacaoIntefaces() throws RemoteException {
         
         super();
-    }
-
-    
+    }    
 
     @Override
     public boolean atualizarProduto(Produto produto) throws RemoteException {
@@ -55,6 +55,15 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
         ProdutoPER produtoPER = new ProdutoPER();
         return produtoPER.deletarProduto(id_produto);
     }
+
+    @Override
+    public boolean logar(String usuario) throws RemoteException {
+        LoginPER loginPER = new LoginPER();
+        return loginPER.logar(usuario);
+    }
+
+ 
+
 
    
 }
