@@ -1,5 +1,10 @@
 package Telas;
 
+import PacotePrincipal.Produto;
+import clienteMesaRN.ProdutoRN;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,12 +16,38 @@ package Telas;
  * @author daniel
  */
 public class TelaInicioMesa extends javax.swing.JFrame {
-
+    private DefaultTableModel tabelaBebida;
+    private DefaultTableModel tabelaComida;
     /**
      * Creates new form TelaInicioMesa
      */
     public TelaInicioMesa() {
         initComponents();
+        this.tabelaBebida = new DefaultTableModel();
+        tabelaBebida.addColumn("Bebida");
+        tabelaBebida.addColumn("Preco");
+        tabelaBebida.addColumn("id");
+        this.jTableBebidas.setModel(this.tabelaBebida);
+        
+        //hide the id in table Bebidas
+        this.jTableBebidas.getColumn("id").setPreferredWidth(0);
+        this.jTableBebidas.getColumn("id").setMinWidth(0);
+        this.jTableBebidas.getColumn("id").setWidth(0);
+        this.jTableBebidas.getColumn("id").setMaxWidth(0);
+        
+        this.tabelaComida = new DefaultTableModel();
+        this.tabelaComida.addColumn("Comida");
+        this.tabelaComida.addColumn("Preco");
+        this.tabelaComida.addColumn("id");
+        this.jTableComidas.setModel(this.tabelaComida);
+        
+        //hide id in table Comida
+        this.jTableComidas.getColumn("id").setPreferredWidth(0);
+        this.jTableComidas.getColumn("id").setMinWidth(0);
+        this.jTableComidas.getColumn("id").setWidth(0);
+        this.jTableComidas.getColumn("id").setMaxWidth(0);
+        
+        this.buscarCardapio();
     }
 
     /**
@@ -34,10 +65,15 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         tabComidas = new javax.swing.JScrollPane();
         jTableComidas = new javax.swing.JTable();
         jButtonIncluir = new javax.swing.JButton();
-        jButtonProximo = new javax.swing.JButton();
-        jButtonTotal = new javax.swing.JButton();
         jLabelQuantidade = new javax.swing.JLabel();
         jSpinnerQuantidade = new javax.swing.JSpinner();
+        jLabelCardapio = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,21 +130,61 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Comidas", tabComidas);
 
-        jButtonIncluir.setText("Incluir");
-
-        jButtonProximo.setText("Próximo");
-        jButtonProximo.addActionListener(new java.awt.event.ActionListener() {
+        jButtonIncluir.setText("Pedir");
+        jButtonIncluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonProximoActionPerformed(evt);
+                jButtonIncluirActionPerformed(evt);
             }
         });
-
-        jButtonTotal.setText("Total");
 
         jLabelQuantidade.setText("Quantidade");
 
         jSpinnerQuantidade.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
         jSpinnerQuantidade.setValue(1);
+
+        jLabelCardapio.setText("Cardápio");
+
+        jLabel1.setText("Pedido");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Item", "Quantidade", "Preço"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jButton1.setText("Finalizar Pedido");
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        jLabel2.setText("Total:");
+
+        jButton2.setText("Deletar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,39 +198,67 @@ public class TelaInicioMesa extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(jLabelQuantidade)
-                        .addGap(27, 27, 27)
+                        .addGap(28, 28, 28)
                         .addComponent(jSpinnerQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonIncluir)
-                                .addGap(32, 32, 32)
-                                .addComponent(jButtonProximo))
-                            .addComponent(jButtonTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(194, Short.MAX_VALUE))
+                        .addComponent(jButtonIncluir)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(72, 72, 72)
+                        .addComponent(jButton1)
+                        .addGap(110, 110, 110))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(467, 467, 467)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(221, 221, 221)
+                .addComponent(jLabelCardapio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(192, 192, 192))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelQuantidade)
-                    .addComponent(jSpinnerQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonIncluir)
-                    .addComponent(jButtonProximo))
-                .addGap(34, 34, 34)
-                .addComponent(jButtonTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabelCardapio))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButtonIncluir)
+                            .addComponent(jSpinnerQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelQuantidade)
+                            .addComponent(jButton2))
+                        .addGap(179, 179, 179))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(43, 43, 43))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProximoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonProximoActionPerformed
+    private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
+       // this.tabelaBebida.setR
+    }//GEN-LAST:event_jButtonIncluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,15 +296,38 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonIncluir;
-    private javax.swing.JButton jButtonProximo;
-    private javax.swing.JButton jButtonTotal;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelCardapio;
     private javax.swing.JLabel jLabelQuantidade;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinnerQuantidade;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableBebidas;
     private javax.swing.JTable jTableComidas;
     private javax.swing.JScrollPane tabBebidas;
     private javax.swing.JScrollPane tabComidas;
     // End of variables declaration//GEN-END:variables
+
+    private void buscarCardapio() {
+        ProdutoRN prn = new ProdutoRN();
+        ArrayList<Produto> produto = prn.buscarCardapio();
+        
+        for (int i=0; i < produto.size(); i++){
+                this.mostrarCardapioNaTela(produto.get(i).getNome(), produto.get(i).getPreco(), produto.get(i).getCategoria(), String.valueOf(produto.get(i).getId()));
+        }
+        
+    }
+    
+    public void mostrarCardapioNaTela(String nome, float preco, String categoria, String id){
+       if (categoria.equals("Bebida")) {
+            this.tabelaBebida.addRow(new String[]{nome, String.format("%.2f", preco), id});
+        } else {
+            this.tabelaComida.addRow(new String[]{nome, String.format("%.2f", preco), id});
+        }
+    }
 }
