@@ -1,5 +1,5 @@
 package Servidor;
-import Interfaces.EstoqueInterface;
+import Interfaces.ServidorInterface;
 import PacotePrincipal.Produto;
 import ServidorPER.ProdutoPER;
 import java.rmi.RemoteException;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 
 // Classe responsável pela implementação dos métodos remotos definidos pela Interface
-public class ImplementacaoIntefaces extends UnicastRemoteObject implements EstoqueInterface {
+public class ImplementacaoIntefaces extends UnicastRemoteObject implements ServidorInterface {
     
     public ImplementacaoIntefaces() throws RemoteException {
         

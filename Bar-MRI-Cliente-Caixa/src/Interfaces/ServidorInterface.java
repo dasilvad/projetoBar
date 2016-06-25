@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 // Interface responsável por conter as assinaturas dos métodos remotos.
 // Obrigatóriamente esta interface deve herdar da classe Remote, esta do pacote RMI do Java.
-public interface EstoqueInterface extends Remote {
+public interface ServidorInterface extends Remote {
     public int inserirProdutoNoBanco(Produto produto) throws RemoteException;
     public boolean atualizarProduto(Produto produto) throws RemoteException;
     public boolean buscarProdutosDoBanco() throws RemoteException;
