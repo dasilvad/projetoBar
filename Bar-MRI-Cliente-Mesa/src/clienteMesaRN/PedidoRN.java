@@ -20,5 +20,10 @@ public class PedidoRN {
        PedidoPER pedidoPER = new PedidoPER();
        return pedidoPER.fazerPedido(pedido, usuario);
     }
+
+    public boolean isDisponivelNoEstoque(ItemPedido item) throws RemoteException{
+        PedidoPER pedidoPER = new PedidoPER();
+        return pedidoPER.isDisponivelNoEstoque(item);
+    }
     
 }

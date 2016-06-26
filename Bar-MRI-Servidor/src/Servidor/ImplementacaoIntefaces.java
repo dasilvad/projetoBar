@@ -77,6 +77,12 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
         return mesaPER.cadastrarMesa(usuario);
     }
 
+    @Override
+    public boolean isDisponivelNoEstoque(ItemPedido item) throws RemoteException {
+        PedidoPER pedidoPER = new PedidoPER();
+        return pedidoPER.isDisponivelNoEstoque(item);
+    }
+
  
 
 

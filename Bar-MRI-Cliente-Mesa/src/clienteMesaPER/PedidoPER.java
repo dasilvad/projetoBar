@@ -21,5 +21,10 @@ public class PedidoPER {
         return m.conectar().fazerPedido(pedido, usuario);
         
     }
+
+    public boolean isDisponivelNoEstoque(ItemPedido item) throws RemoteException{
+        MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
+        return m.conectar().isDisponivelNoEstoque(item); 
+    }
     
 }

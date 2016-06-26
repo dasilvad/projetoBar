@@ -29,4 +29,6 @@ public interface ServidorInterface extends Remote {
     public boolean  fazerPedido(ArrayList<ItemPedido> pedido, String usuario) throws RemoteException;
 
     public boolean cadastrarMesa(String usuario) throws RemoteException;
+
+    public boolean isDisponivelNoEstoque(ItemPedido item) throws RemoteException;
 }

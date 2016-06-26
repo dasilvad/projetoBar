@@ -8,6 +8,7 @@ import clienteMesaRN.PedidoRN;
 import clienteMesaRN.ProdutoRN;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -108,6 +109,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelNomeMesa = new javax.swing.JLabel();
         jButtonHistoricoConsumo = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1140, 600));
@@ -254,6 +256,9 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabel2.setText("Total: ");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 550, -1, -1));
 
+        jLabel3.setText("Ver se tem no estoque");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 540, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -265,11 +270,13 @@ public class TelaInicioMesa extends javax.swing.JFrame {
           String precoUnitario = a.get(1).toString();
           String id = a.get(2).toString();
           
+          
+          
           float subtotal =Integer.parseInt(quantidade) * Float.parseFloat(precoUnitario);
           
           this.modelPedido.addRow(new String [] {item, precoUnitario, quantidade, String.valueOf(subtotal), id});
           this.ativarBotoesPedido();
-          this.calcularTotalDoPedido();
+          this.calcularSubtotalDoPedido();
           this.atualizarListaPedidoAtual(Integer.parseInt(id), this.usuario, Integer.parseInt(quantidade));
           
        }else if (jTableComidas.getSelectedRow() != -1 && jTabbedPaneCardapio.getSelectedIndex() == 1) {
@@ -284,7 +291,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 
                 this.modelPedido.addRow(new String [] {item, precoUnitario, quantidade, String.valueOf(subtotal), id});
                 this.ativarBotoesPedido();
-                this.calcularTotalDoPedido();
+                this.calcularSubtotalDoPedido();
                 this.atualizarListaPedidoAtual(Integer.parseInt(id), this.usuario, Integer.parseInt(quantidade));
             }
        
@@ -296,18 +303,28 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private void jButtonDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeletarActionPerformed
         int linhaSelecionada = this.jTablePedido.getSelectedRow();
         if (linhaSelecionada != -1){
+            this.removerItemPedidoAtual (Integer.parseInt((String) this.modelPedido.getValueAt(this.jTablePedido.getSelectedRow(), 4)));
             this.modelPedido.removeRow(linhaSelecionada);
             if (jTablePedido.getRowCount() < 1){
                 this.jButtonDeletar.setEnabled(false);
                 this.jButtonFinalizarPedido.setEnabled(false);
             }
+            this.calcularSubtotalDoPedido();
         }else{
             JOptionPane.showMessageDialog(null, "Primeiro selecione um item para deletar.");
         }
     }//GEN-LAST:event_jButtonDeletarActionPerformed
 
     private void jButtonFinalizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFinalizarPedidoActionPerformed
-        
+        try {
+            //verficia se os produtos do pedido atual estao disponiveis no estoque
+            if (this.verificarEstoque() == false){
+                return;
+            }
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao se conectar com o servidor para verificar estoque!");
+           return;
+        }
         
         if (this.cadastrarMesa() == false){
             JOptionPane.showMessageDialog(null, "Erro ao Finalizar Pedido. Mesa nao foi cadastrada!");
@@ -398,6 +415,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelCardapio;
     private javax.swing.JLabel jLabelNomeMesa;
     private javax.swing.JLabel jLabelQuantidade;
@@ -440,14 +458,14 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         this.jButtonHistoricoConsumo.setEnabled(true);
     }
 
-    private void calcularTotalDoPedido() {
+    private void calcularSubtotalDoPedido() {
         float total=0;
         
         for (int i= 0; i < this.modelPedido.getRowCount(); i++){
             String subtotal = (String) this.modelPedido.getValueAt(i, 3);
             total += Float.parseFloat(subtotal);
         }
-        this.jLabelTotal.setText("Subtotal: "+String.valueOf(total));
+        this.jLabelTotal.setText("Subtotal Pedido: "+String.valueOf(total));
     }
 
     private void atualizarListaPedidoAtual(int id_produto, String usuario, int quantidade) {
@@ -505,11 +523,57 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     /*cadastra se nao houver nenhum consumo relacionado a mesa. Portanto esse metodo executa somente uma vez. Esse metodo e chamado quando um pedido e finalizado.*/
     private boolean cadastrarMesa() {
         MesaRN mesaRN = new MesaRN();
-        if (historicoConsumo.isEmpty()){
+        if (historicoConsumo.size() == 0){
             return mesaRN.cadastrarMesa(this.usuario);
         }else{
             return true;
         }
         
     }
+    //verifica se os produtos do pedidoAtual estao disponiveis no estoque
+    private boolean verificarEstoque() throws RemoteException {
+        ArrayList<ItemPedido> itemIndisponivel = new ArrayList<>();
+        Iterator it = pedidoAtual.iterator();
+        boolean temNoEstoque = true;
+        PedidoRN pedidoRN = new PedidoRN();
+        
+        while(it.hasNext()){
+            ItemPedido item = (ItemPedido) it.next();
+            
+            if (pedidoRN.isDisponivelNoEstoque(item) == false){
+               temNoEstoque = false;
+               itemIndisponivel.add(item);
+            }
+        }
+        
+        String indisponivel = "";
+        Iterator iti = itemIndisponivel.iterator();
+       
+        while(iti.hasNext()){
+            ItemPedido item = (ItemPedido) iti.next();
+            Iterator c = this.cardapio.iterator();
+            while(c.hasNext()){
+                Produto produto = (Produto) c.next();
+                if (produto.getId() == item.getId_produto()){
+                    indisponivel += produto.getNome()+" ";
+                    break;
+                }
+            }
+        }
+        if (temNoEstoque == false){
+            JOptionPane.showMessageDialog(null, "Produtos indiponíveis: "+indisponivel+". Delete eles do Pedido e tente uma quantidade menor.");
+        }
+        
+        return temNoEstoque;
+    }
+
+    private void removerItemPedidoAtual(int id_produto) {
+        for (int i=0; i < this.pedidoAtual.size(); i++){
+            if (this.pedidoAtual.get(i).getId_produto() == id_produto){
+                this.pedidoAtual.remove(i);
+                return;
+            }
+        }
+    }
+    
 }
