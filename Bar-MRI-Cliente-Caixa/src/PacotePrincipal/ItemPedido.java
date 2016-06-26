@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class ItemPedido implements Serializable{
     private int id_produto;
     private int quantidade;
-    
+
     public ItemPedido(int id_produto, int quantidade) {
         this.id_produto = id_produto;
         this.quantidade = quantidade;

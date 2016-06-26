@@ -1,9 +1,16 @@
 package Telas;
 
+import PacotePrincipal.ItemPedido;
 import PacotePrincipal.Produto;
+import clienteMesaRN.MesaRN;
+import clienteMesaRN.PedidoRN;
+
 import clienteMesaRN.ProdutoRN;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,6 +29,9 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private DefaultTableModel modelComida;
     private DefaultTableModel modelPedido;
     private String usuario;
+    private ArrayList<ItemPedido> pedidoAtual;
+    private ArrayList<ItemPedido> historicoConsumo;
+    private ArrayList<Produto> cardapio;
     /**
      * Creates new form TelaInicioMesa
      */
@@ -64,8 +74,11 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         this.jTablePedido.getColumn("id").setMinWidth(0);
         this.jTablePedido.getColumn("id").setWidth(0);
         this.jTablePedido.getColumn("id").setMaxWidth(0);
-        
+        this.jButtonDeletar.setEnabled(false);
+        this.jButtonFinalizarPedido.setEnabled(false);
         this.buscarCardapio();
+        this.pedidoAtual = new ArrayList<>();
+        historicoConsumo = new ArrayList<>();
     }
 
     /**
@@ -89,12 +102,15 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTablePedido = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jButtonFinalizarPedido = new javax.swing.JButton();
+        jLabelTotal = new javax.swing.JLabel();
+        jButtonDeletar = new javax.swing.JButton();
         jLabelNomeMesa = new javax.swing.JLabel();
+        jButtonHistoricoConsumo = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1140, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTableBebidas.setModel(new javax.swing.table.DefaultTableModel(
@@ -208,19 +224,35 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 98, -1, 300));
 
-        jButton1.setText("Finalizar Pedido");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 430, -1, -1));
+        jButtonFinalizarPedido.setText("Finalizar Pedido");
+        jButtonFinalizarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFinalizarPedidoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonFinalizarPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 430, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
-        jLabel2.setText("Total:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(467, 495, -1, -1));
+        jLabelTotal.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        jLabelTotal.setText("Subtotal:");
+        getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(467, 495, -1, -1));
 
-        jButton2.setText("Deletar");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 430, -1, -1));
+        jButtonDeletar.setText("Deletar");
+        jButtonDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeletarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonDeletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 430, -1, -1));
 
         jLabelNomeMesa.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabelNomeMesa.setText("Mesa: ");
         getContentPane().add(jLabelNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 12, -1, -1));
+
+        jButtonHistoricoConsumo.setText("Historico Consumo");
+        getContentPane().add(jButtonHistoricoConsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 430, -1, -1));
+
+        jLabel2.setText("Total: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 550, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -236,7 +268,10 @@ public class TelaInicioMesa extends javax.swing.JFrame {
           float subtotal =Integer.parseInt(quantidade) * Float.parseFloat(precoUnitario);
           
           this.modelPedido.addRow(new String [] {item, precoUnitario, quantidade, String.valueOf(subtotal), id});
-           System.out.println();
+          this.ativarBotoesPedido();
+          this.calcularTotalDoPedido();
+          this.atualizarListaPedidoAtual(Integer.parseInt(id), this.usuario, Integer.parseInt(quantidade));
+          
        }else if (jTableComidas.getSelectedRow() != -1 && jTabbedPaneCardapio.getSelectedIndex() == 1) {
             if (jTableComidas.getSelectedRow() != -1){//usuario clicou em alguma linha
                 Vector a =  (Vector) modelComida.getDataVector().elementAt(jTableComidas.getSelectedRow());
@@ -248,13 +283,78 @@ public class TelaInicioMesa extends javax.swing.JFrame {
                 float subtotal =Integer.parseInt(quantidade) * Float.parseFloat(precoUnitario);
 
                 this.modelPedido.addRow(new String [] {item, precoUnitario, quantidade, String.valueOf(subtotal), id});
-                 System.out.println();
+                this.ativarBotoesPedido();
+                this.calcularTotalDoPedido();
+                this.atualizarListaPedidoAtual(Integer.parseInt(id), this.usuario, Integer.parseInt(quantidade));
             }
        
        }else{
            
        }
     }//GEN-LAST:event_jButtonIncluirActionPerformed
+
+    private void jButtonDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeletarActionPerformed
+        int linhaSelecionada = this.jTablePedido.getSelectedRow();
+        if (linhaSelecionada != -1){
+            this.modelPedido.removeRow(linhaSelecionada);
+            if (jTablePedido.getRowCount() < 1){
+                this.jButtonDeletar.setEnabled(false);
+                this.jButtonFinalizarPedido.setEnabled(false);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Primeiro selecione um item para deletar.");
+        }
+    }//GEN-LAST:event_jButtonDeletarActionPerformed
+
+    private void jButtonFinalizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFinalizarPedidoActionPerformed
+        
+        
+        if (this.cadastrarMesa() == false){
+            JOptionPane.showMessageDialog(null, "Erro ao Finalizar Pedido. Mesa nao foi cadastrada!");
+            return;
+        }
+        this.atualizarHistoricoConsumo();
+        this.imprimirPedidos();
+                
+        //salvar pedido no banco
+        PedidoRN pedidoRN = new PedidoRN();
+        try {
+            if (pedidoRN.fazerPedido(pedidoAtual, this.usuario)){
+                JOptionPane.showMessageDialog(null, "Pedido Realizado com Sucesso!");
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Chame o garçom!");
+            }
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Servidor nao localizado. Chame o garçom!");
+        }
+        
+        pedidoAtual = new  ArrayList<>();
+        this.limparTabelaPedido();
+        this.ativarBotaoHistoricoConsumo();
+        this.jButtonDeletar.setEnabled(false);
+        this.jButtonFinalizarPedido.setEnabled(false);
+        this.jButtonHistoricoConsumo.setEnabled(true);
+        
+       /* for (int i= 0; i < this.modelPedido.getRowCount(); i++){
+            
+            int quantidade =  Integer.parseInt( (String) this.modelPedido.getValueAt(i, 2));
+            int id_produto =  Integer.parseInt( (String)this.modelPedido.getValueAt(i, 4));
+            
+            ItemPedido itemPedido = new ItemPedido(quantidade, id_produto);
+            pedido.add(itemPedido);
+        }
+        
+        PedidoRN pedidoRN = new PedidoRN();
+        try {
+            if (pedidoRN.fazerPedido(pedido, this.usuario)){
+                JOptionPane.showMessageDialog(null, "Pedido Realizado com Sucesso!");
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Chame o garçom!");
+            }
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Servidor nao localizado. Chame o garçom!");
+        }*/
+    }//GEN-LAST:event_jButtonFinalizarPedidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -292,14 +392,16 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonDeletar;
+    private javax.swing.JButton jButtonFinalizarPedido;
+    private javax.swing.JButton jButtonHistoricoConsumo;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelCardapio;
     private javax.swing.JLabel jLabelNomeMesa;
     private javax.swing.JLabel jLabelQuantidade;
+    private javax.swing.JLabel jLabelTotal;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinnerQuantidade;
     private javax.swing.JTabbedPane jTabbedPaneCardapio;
@@ -312,12 +414,11 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 
     private void buscarCardapio() {
         ProdutoRN prn = new ProdutoRN();
-        ArrayList<Produto> produto = prn.buscarCardapio();
+        cardapio = prn.buscarCardapio();
         
-        for (int i=0; i < produto.size(); i++){
-                this.mostrarCardapioNaTela(produto.get(i).getNome(), produto.get(i).getPreco(), produto.get(i).getCategoria(), String.valueOf(produto.get(i).getId()));
+        for (int i=0; i < cardapio.size(); i++){
+                this.mostrarCardapioNaTela(cardapio.get(i).getNome(), cardapio.get(i).getPreco(), cardapio.get(i).getCategoria(), String.valueOf(cardapio.get(i).getId()));
         }
-        
     }
     
     public void mostrarCardapioNaTela(String nome, float preco, String categoria, String id){
@@ -331,5 +432,84 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     void setUsuario(String usuario) {
         this.usuario = usuario;
         this.jLabelNomeMesa.setText("Mesa: "+usuario);
+    }
+
+    private void ativarBotoesPedido() {
+        this.jButtonDeletar.setEnabled(true);
+        this.jButtonFinalizarPedido.setEnabled(true);
+        this.jButtonHistoricoConsumo.setEnabled(true);
+    }
+
+    private void calcularTotalDoPedido() {
+        float total=0;
+        
+        for (int i= 0; i < this.modelPedido.getRowCount(); i++){
+            String subtotal = (String) this.modelPedido.getValueAt(i, 3);
+            total += Float.parseFloat(subtotal);
+        }
+        this.jLabelTotal.setText("Subtotal: "+String.valueOf(total));
+    }
+
+    private void atualizarListaPedidoAtual(int id_produto, String usuario, int quantidade) {
+        for (int i=0; i < pedidoAtual.size(); i++){
+            if(pedidoAtual.get(i).getId_produto() == id_produto){
+                pedidoAtual.get(i).setQuantidade(pedidoAtual.get(i).getQuantidade() + quantidade);
+                return;
+            }
+        }
+        pedidoAtual.add(new ItemPedido(id_produto, quantidade));
+    }
+
+    private void atualizarHistoricoConsumo() {
+        for (int i = 0; i < pedidoAtual.size(); i++){
+            if (this.produtoNaoExisteNoHistoricoDeConsumo(pedidoAtual.get(i))){
+                historicoConsumo.add(new ItemPedido(pedidoAtual.get(i).getId_produto(), pedidoAtual.get(i).getQuantidade()));
+            }
+        }
+        
+        
+    }
+
+    private boolean produtoNaoExisteNoHistoricoDeConsumo(ItemPedido item) {
+        for (int i = 0; i < historicoConsumo.size(); i++){
+            if (historicoConsumo.get(i).getId_produto() == item.getId_produto()){
+                historicoConsumo.get(i).setQuantidade(historicoConsumo.get(i).getQuantidade() + item.getQuantidade());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void limparTabelaPedido() {
+       while(modelPedido.getRowCount() > 0){
+           modelPedido.removeRow(0);
+       }
+       
+    }
+
+    private void ativarBotaoHistoricoConsumo() {
+        this.jButtonHistoricoConsumo.setEnabled(true);
+    }
+
+    private void imprimirPedidos() {
+        System.out.println("Pedido Atual");
+        for (int i=0; i < pedidoAtual.size(); i++){
+            System.out.println(pedidoAtual.get(i).getId_produto() + " quatde: "+pedidoAtual.get(i).getQuantidade());
+        }
+        System.out.println("historico consumo");
+        for (int i=0; i < historicoConsumo.size(); i++){
+            
+            System.out.println(historicoConsumo.get(i).getId_produto() + " quatde: "+historicoConsumo.get(i).getQuantidade());
+        }
+    }
+    /*cadastra se nao houver nenhum consumo relacionado a mesa. Portanto esse metodo executa somente uma vez. Esse metodo e chamado quando um pedido e finalizado.*/
+    private boolean cadastrarMesa() {
+        MesaRN mesaRN = new MesaRN();
+        if (historicoConsumo.isEmpty()){
+            return mesaRN.cadastrarMesa(this.usuario);
+        }else{
+            return true;
+        }
+        
     }
 }
