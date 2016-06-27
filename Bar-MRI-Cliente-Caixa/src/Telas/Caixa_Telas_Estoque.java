@@ -69,10 +69,20 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         tBebidas = new JTable(tabelaBebidas);
         tPratos = new JTable(tabelaPratos);
         
+        //hide id in tab bebidas
         tBebidas.getColumn("id").setPreferredWidth(0);
         tBebidas.getColumn("id").setMinWidth(0);
         tBebidas.getColumn("id").setWidth(0);
         tBebidas.getColumn("id").setMaxWidth(0);
+        //----------------------------------
+        
+        //hide id in tab comidas
+        tPratos.getColumn("id").setPreferredWidth(0);
+        tPratos.getColumn("id").setMinWidth(0);
+        tPratos.getColumn("id").setWidth(0);
+        tPratos.getColumn("id").setMaxWidth(0);
+        //-----------------------------------------
+        
         
         jTabbedPaneCardapio.add("Bebidas", tBebidas);
         jTabbedPaneCardapio.add("Pratos", tPratos);
