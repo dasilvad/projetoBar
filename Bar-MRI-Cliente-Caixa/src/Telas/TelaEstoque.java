@@ -362,17 +362,28 @@ public class TelaEstoque extends javax.swing.JFrame {
             float preco = Float.parseFloat(this.jTextFieldPreco.getText());
             int quantidade = Integer.parseInt(this.jTextFieldQuantidade.getText());
             Produto produto = new Produto (nome, categoria, preco, quantidade);
-            int id_produto = Integer.parseInt((String) tBebidas.getValueAt(tBebidas.getSelectedRow(), 3));
+            
+            int id_produto;
+            if (jTabbedPaneCardapio.getSelectedIndex() == 0) {
+                id_produto = Integer.parseInt((String) tBebidas.getValueAt(tBebidas.getSelectedRow(), 3));
+            }else{
+                id_produto = Integer.parseInt((String) tPratos.getValueAt(tPratos.getSelectedRow(), 3));
+            }
+                        
+            
             produto.setId(id_produto);
-            
-            
-            
-            
             ProdutoRN produtoRN = new ProdutoRN();
             if (produtoRN.atualizarProduto(produto)){
+                if (jTabbedPaneCardapio.getSelectedIndex() == 0) {//verifica qual em qual tab eu devo atualizar a linha selecionada
                     tBebidas.setValueAt(nome, tBebidas.getSelectedRow(),0);
                     tBebidas.setValueAt(String.valueOf(preco), tBebidas.getSelectedRow(),1);
                     tBebidas.setValueAt(String.valueOf(quantidade), tBebidas.getSelectedRow(),2);
+                }else{
+                    tPratos.setValueAt(nome, tPratos.getSelectedRow(),0);
+                    tPratos.setValueAt(String.valueOf(preco), tPratos.getSelectedRow(),1);
+                    tPratos.setValueAt(String.valueOf(quantidade), tPratos.getSelectedRow(),2);
+                }
+                    
             }else{
                 JOptionPane.showMessageDialog(null,
                         "Erro ao atualizar. Verifique se os campos estão corretos.",

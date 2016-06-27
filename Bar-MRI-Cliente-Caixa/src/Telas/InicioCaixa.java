@@ -63,6 +63,7 @@ public class InicioCaixa extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabelTotal = new javax.swing.JLabel();
         jComboBoxNomeMesa = new javax.swing.JComboBox();
+        jButtonFecharConta = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuEstoque = new javax.swing.JMenu();
         jMenuItemGerenciarEstoque = new javax.swing.JMenuItem();
@@ -71,6 +72,7 @@ public class InicioCaixa extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(982, 622));
+        setPreferredSize(new java.awt.Dimension(830, 750));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTablePedido.setModel(new javax.swing.table.DefaultTableModel(
@@ -113,7 +115,7 @@ public class InicioCaixa extends javax.swing.JFrame {
 
         jLabelTotal.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabelTotal.setText("Total: 0");
-        getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 500, -1, -1));
+        getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 500, -1, -1));
 
         jComboBoxNomeMesa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione" }));
         jComboBoxNomeMesa.addActionListener(new java.awt.event.ActionListener() {
@@ -127,6 +129,9 @@ public class InicioCaixa extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jComboBoxNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, -1, -1));
+
+        jButtonFecharConta.setText("Fechar Conta");
+        getContentPane().add(jButtonFecharConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 560, 120, 50));
 
         jMenuEstoque.setText("Estoque");
 
@@ -219,6 +224,7 @@ public class InicioCaixa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonFecharConta;
     private javax.swing.JComboBox jComboBoxNomeMesa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelNomeMesa;
