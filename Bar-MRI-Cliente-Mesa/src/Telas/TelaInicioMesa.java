@@ -77,6 +77,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         this.jTablePedido.getColumn("id").setMaxWidth(0);
         this.jButtonDeletar.setEnabled(false);
         this.jButtonFinalizarPedido.setEnabled(false);
+        this.jButtonHistoricoConsumo.setEnabled(false);
         this.buscarCardapio();
         this.pedidoAtual = new ArrayList<>();
         historicoConsumo = new ArrayList<>();
@@ -111,7 +112,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1140, 600));
+        setPreferredSize(new java.awt.Dimension(1140, 620));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTableBebidas.setModel(new javax.swing.table.DefaultTableModel(
@@ -250,6 +251,11 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         getContentPane().add(jLabelNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 12, -1, -1));
 
         jButtonHistoricoConsumo.setText("Historico Consumo");
+        jButtonHistoricoConsumo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonHistoricoConsumoActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonHistoricoConsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 430, 160, 40));
 
         jLabelTotal.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
@@ -338,6 +344,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
                 float precoTotal = this.calcularTotal(this.historicoConsumo);
                 this.jLabelTotal.setText("Total: "+precoTotal);
                 this.jLabelSubtotal.setText("Subtotal Pedido: 0");
+                
                 JOptionPane.showMessageDialog(null, "Pedido Realizado com Sucesso!");
             }else{
                 JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Chame o garçom!");
@@ -351,10 +358,16 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         this.ativarBotaoHistoricoConsumo();
         this.jButtonDeletar.setEnabled(false);
         this.jButtonFinalizarPedido.setEnabled(false);
-        this.jButtonHistoricoConsumo.setEnabled(true);
+       
         
        
     }//GEN-LAST:event_jButtonFinalizarPedidoActionPerformed
+
+    private void jButtonHistoricoConsumoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHistoricoConsumoActionPerformed
+        TelaConsumoMesa telaConsumoMesa = new TelaConsumoMesa(this.cardapio, this.historicoConsumo, this.usuario);
+        telaConsumoMesa.setVisible(true);
+        
+    }//GEN-LAST:event_jButtonHistoricoConsumoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,7 +450,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private void ativarBotoesPedido() {
         this.jButtonDeletar.setEnabled(true);
         this.jButtonFinalizarPedido.setEnabled(true);
-        this.jButtonHistoricoConsumo.setEnabled(true);
+        
     }
 
     private void calcularSubtotalDoPedido() {
