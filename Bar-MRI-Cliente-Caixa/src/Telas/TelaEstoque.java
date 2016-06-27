@@ -26,9 +26,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author adson
  */
-public class Caixa_Telas_Estoque extends javax.swing.JFrame {
+public class TelaEstoque extends javax.swing.JFrame {
 
-    private Caixa_Telas_Inicio inicio;
+    
     private static DefaultTableModel tabelaBebidas;
     private static DefaultTableModel tabelaPratos;
     private static JTable tBebidas;
@@ -38,9 +38,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
     /**
      * Creates new form Consumo
      */
-    public Caixa_Telas_Estoque(Caixa_Telas_Inicio inicio) {
-        this.inicio = inicio;
-
+    public TelaEstoque() {
         initComponents();
         inicializarAbas();
         

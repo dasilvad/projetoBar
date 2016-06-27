@@ -63,6 +63,11 @@ public class InicioCaixa extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabelTotal = new javax.swing.JLabel();
         jComboBoxNomeMesa = new javax.swing.JComboBox();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuEstoque = new javax.swing.JMenu();
+        jMenuItemGerenciarEstoque = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(982, 622));
@@ -123,6 +128,27 @@ public class InicioCaixa extends javax.swing.JFrame {
         });
         getContentPane().add(jComboBoxNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, -1, -1));
 
+        jMenuEstoque.setText("Estoque");
+
+        jMenuItemGerenciarEstoque.setText("Gerenciar Estoque");
+        jMenuItemGerenciarEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGerenciarEstoqueActionPerformed(evt);
+            }
+        });
+        jMenuEstoque.add(jMenuItemGerenciarEstoque);
+
+        jMenuBar1.add(jMenuEstoque);
+
+        jMenu2.setText("Sobre");
+
+        jMenuItem2.setText("About");
+        jMenu2.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -138,6 +164,7 @@ public class InicioCaixa extends javax.swing.JFrame {
                     System.out.println("Selecionou elemento: "+id_mesa);
                     System.out.println("quantidade: "+listConsumo.get(0).getQuantidade());
                     this.mostrarConsumoNaTela(listConsumo);
+                    this.calcularTotalDoPedido();
                 }
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(null, "Erro ao buscar conta");
@@ -150,6 +177,11 @@ public class InicioCaixa extends javax.swing.JFrame {
     private void jComboBoxNomeMesaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBoxNomeMesaFocusGained
          this.buscarMesas();
     }//GEN-LAST:event_jComboBoxNomeMesaFocusGained
+
+    private void jMenuItemGerenciarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGerenciarEstoqueActionPerformed
+        TelaEstoque telaEstoque = new TelaEstoque();
+        telaEstoque.setVisible(true);
+    }//GEN-LAST:event_jMenuItemGerenciarEstoqueActionPerformed
     
     /**
      * @param args the command line arguments
@@ -191,6 +223,11 @@ public class InicioCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelNomeMesa;
     private javax.swing.JLabel jLabelTotal;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuEstoque;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItemGerenciarEstoque;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTablePedido;
     // End of variables declaration//GEN-END:variables

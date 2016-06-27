@@ -6,7 +6,7 @@
 package clienteCaixaRN;
 
 import PacotePrincipal.Produto;
-import Telas.Caixa_Telas_Estoque;
+import Telas.TelaEstoque;
 import clienteCaixaPER.ProdutoPER;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
