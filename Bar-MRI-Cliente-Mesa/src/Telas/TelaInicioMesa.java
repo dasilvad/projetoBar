@@ -104,12 +104,11 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTablePedido = new javax.swing.JTable();
         jButtonFinalizarPedido = new javax.swing.JButton();
-        jLabelTotal = new javax.swing.JLabel();
+        jLabelSubtotal = new javax.swing.JLabel();
         jButtonDeletar = new javax.swing.JButton();
         jLabelNomeMesa = new javax.swing.JLabel();
         jButtonHistoricoConsumo = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1140, 600));
@@ -176,14 +175,14 @@ public class TelaInicioMesa extends javax.swing.JFrame {
                 jButtonIncluirActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonIncluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(237, 434, -1, -1));
+        getContentPane().add(jButtonIncluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 430, 70, 40));
 
-        jLabelQuantidade.setText("Quantidade");
+        jLabelQuantidade.setText("Quantidade:");
         getContentPane().add(jLabelQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 440, -1, -1));
 
         jSpinnerQuantidade.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
         jSpinnerQuantidade.setValue(1);
-        getContentPane().add(jSpinnerQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 435, -1, -1));
+        getContentPane().add(jSpinnerQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 435, 50, 30));
 
         jLabelCardapio.setText("Cardápio");
         getContentPane().add(jLabelCardapio, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, 42, -1, -1));
@@ -232,11 +231,11 @@ public class TelaInicioMesa extends javax.swing.JFrame {
                 jButtonFinalizarPedidoActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonFinalizarPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 430, -1, -1));
+        getContentPane().add(jButtonFinalizarPedido, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 430, 140, 40));
 
-        jLabelTotal.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
-        jLabelTotal.setText("Subtotal:");
-        getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(467, 495, -1, -1));
+        jLabelSubtotal.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        jLabelSubtotal.setText("Subtotal Pedido: 0");
+        getContentPane().add(jLabelSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 500, -1, -1));
 
         jButtonDeletar.setText("Deletar");
         jButtonDeletar.addActionListener(new java.awt.event.ActionListener() {
@@ -244,20 +243,18 @@ public class TelaInicioMesa extends javax.swing.JFrame {
                 jButtonDeletarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonDeletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 430, -1, -1));
+        getContentPane().add(jButtonDeletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 430, 80, 40));
 
         jLabelNomeMesa.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabelNomeMesa.setText("Mesa: ");
         getContentPane().add(jLabelNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 12, -1, -1));
 
         jButtonHistoricoConsumo.setText("Historico Consumo");
-        getContentPane().add(jButtonHistoricoConsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 430, -1, -1));
+        getContentPane().add(jButtonHistoricoConsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 430, 160, 40));
 
-        jLabel2.setText("Total: ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 550, -1, -1));
-
-        jLabel3.setText("Ver se tem no estoque");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 540, -1, -1));
+        jLabelTotal.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        jLabelTotal.setText("Total: 0");
+        getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -337,6 +334,10 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         PedidoRN pedidoRN = new PedidoRN();
         try {
             if (pedidoRN.fazerPedido(pedidoAtual, this.usuario)){
+                
+                float precoTotal = this.calcularTotal(this.historicoConsumo);
+                this.jLabelTotal.setText("Total: "+precoTotal);
+                this.jLabelSubtotal.setText("Subtotal Pedido: 0");
                 JOptionPane.showMessageDialog(null, "Pedido Realizado com Sucesso!");
             }else{
                 JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Chame o garçom!");
@@ -352,25 +353,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         this.jButtonFinalizarPedido.setEnabled(false);
         this.jButtonHistoricoConsumo.setEnabled(true);
         
-       /* for (int i= 0; i < this.modelPedido.getRowCount(); i++){
-            
-            int quantidade =  Integer.parseInt( (String) this.modelPedido.getValueAt(i, 2));
-            int id_produto =  Integer.parseInt( (String)this.modelPedido.getValueAt(i, 4));
-            
-            ItemPedido itemPedido = new ItemPedido(quantidade, id_produto);
-            pedido.add(itemPedido);
-        }
-        
-        PedidoRN pedidoRN = new PedidoRN();
-        try {
-            if (pedidoRN.fazerPedido(pedido, this.usuario)){
-                JOptionPane.showMessageDialog(null, "Pedido Realizado com Sucesso!");
-            }else{
-                JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Chame o garçom!");
-            }
-        } catch (RemoteException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao fazer pedido. Servidor nao localizado. Chame o garçom!");
-        }*/
+       
     }//GEN-LAST:event_jButtonFinalizarPedidoActionPerformed
 
     /**
@@ -414,11 +397,10 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private javax.swing.JButton jButtonHistoricoConsumo;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelCardapio;
     private javax.swing.JLabel jLabelNomeMesa;
     private javax.swing.JLabel jLabelQuantidade;
+    private javax.swing.JLabel jLabelSubtotal;
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinnerQuantidade;
@@ -465,7 +447,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
             String subtotal = (String) this.modelPedido.getValueAt(i, 3);
             total += Float.parseFloat(subtotal);
         }
-        this.jLabelTotal.setText("Subtotal Pedido: "+String.valueOf(total));
+        this.jLabelSubtotal.setText("Subtotal Pedido: "+String.valueOf(total));
     }
 
     private void atualizarListaPedidoAtual(int id_produto, String usuario, int quantidade) {
@@ -575,5 +557,30 @@ public class TelaInicioMesa extends javax.swing.JFrame {
             }
         }
     }
+
+    private float calcularTotal(ArrayList<ItemPedido> historicoConsumo) {
+        Iterator it = historicoConsumo.iterator();
+        float total = 0;
+        
+        while(it.hasNext()){
+            ItemPedido item = (ItemPedido) it.next();
+            float subtotal = this.buscarSubtotalProduto(item.getId_produto(), item.getQuantidade());
+            total += subtotal;
+        }
+        
+        return total;
+    }
     
+    //busca o preco do produto no cardapio e calcula o subtotal com base na quantidade pedida de um produto
+    private float buscarSubtotalProduto(int id_produto, int quantidade){
+        Iterator it = this.cardapio.iterator();
+        
+        while(it.hasNext()){
+            Produto produto = (Produto) it.next();
+            if (produto.getId() == id_produto){
+                return produto.getPreco() * quantidade;
+            }
+        }
+        return -1;
+    }
 }
