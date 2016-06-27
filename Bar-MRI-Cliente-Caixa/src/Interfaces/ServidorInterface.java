@@ -1,6 +1,7 @@
 package Interfaces;
 
 
+import PacotePrincipal.Consumo;
 import PacotePrincipal.ItemPedido;
 import PacotePrincipal.Produto;
 import java.rmi.*;
@@ -31,4 +32,8 @@ public interface ServidorInterface extends Remote {
     public boolean cadastrarMesa(String usuario) throws RemoteException;
 
     public boolean isDisponivelNoEstoque(ItemPedido item) throws RemoteException;
+
+    public ArrayList<String> buscarMesas() throws RemoteException;
+
+    public ArrayList<Consumo> buscarConsumo(String id_mesa) throws RemoteException;
 }

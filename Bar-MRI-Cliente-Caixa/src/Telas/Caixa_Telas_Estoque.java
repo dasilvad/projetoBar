@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -69,6 +70,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         tBebidas = new JTable(tabelaBebidas);
         tPratos = new JTable(tabelaPratos);
         
+        
         //hide id in tab bebidas
         tBebidas.getColumn("id").setPreferredWidth(0);
         tBebidas.getColumn("id").setMinWidth(0);
@@ -83,6 +85,7 @@ public class Caixa_Telas_Estoque extends javax.swing.JFrame {
         tPratos.getColumn("id").setMaxWidth(0);
         //-----------------------------------------
         
+       
         
         jTabbedPaneCardapio.add("Bebidas", tBebidas);
         jTabbedPaneCardapio.add("Pratos", tPratos);

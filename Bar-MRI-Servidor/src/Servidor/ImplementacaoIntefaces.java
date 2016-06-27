@@ -1,8 +1,10 @@
 package Servidor;
 
 import Interfaces.ServidorInterface;
+import PacotePrincipal.Consumo;
 import PacotePrincipal.ItemPedido;
 import PacotePrincipal.Produto;
+import ServidorPER.ConsumoPER;
 import ServidorPER.LoginPER;
 import ServidorPER.MesaPER;
 import ServidorPER.PedidoPER;
@@ -81,6 +83,18 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
     public boolean isDisponivelNoEstoque(ItemPedido item) throws RemoteException {
         PedidoPER pedidoPER = new PedidoPER();
         return pedidoPER.isDisponivelNoEstoque(item);
+    }
+
+    @Override
+    public ArrayList<String> buscarMesas() throws RemoteException {
+       ConsumoPER consumoPER = new ConsumoPER();
+       return consumoPER.buscarMesas();
+    }
+
+    @Override
+    public ArrayList<Consumo> buscarConsumo(String id_mesa) throws RemoteException {
+        ConsumoPER consumoPER = new ConsumoPER();
+        return consumoPER.buscarConsumo(id_mesa);
     }
 
  
