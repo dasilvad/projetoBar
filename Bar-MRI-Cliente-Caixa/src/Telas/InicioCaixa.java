@@ -131,6 +131,11 @@ public class InicioCaixa extends javax.swing.JFrame {
         getContentPane().add(jComboBoxNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, -1, -1));
 
         jButtonFecharConta.setText("Fechar Conta");
+        jButtonFecharConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharContaActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonFecharConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 560, 120, 50));
 
         jMenuEstoque.setText("Estoque");
@@ -163,7 +168,7 @@ public class InicioCaixa extends javax.swing.JFrame {
                 listConsumo = new ArrayList<Consumo>();
                 
                 ConsumoRN consumoRN = new ConsumoRN();
-                String id_mesa = this.jComboBoxNomeMesa.getSelectedItem().toString();
+                String id_mesa = this.getIdMesa();
                 listConsumo = consumoRN.buscarConsumo(id_mesa);
                 if (listConsumo.size() > 0){
                     System.out.println("Selecionou elemento: "+id_mesa);
@@ -187,6 +192,27 @@ public class InicioCaixa extends javax.swing.JFrame {
         TelaEstoque telaEstoque = new TelaEstoque();
         telaEstoque.setVisible(true);
     }//GEN-LAST:event_jMenuItemGerenciarEstoqueActionPerformed
+
+    private void jButtonFecharContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharContaActionPerformed
+        int option = JOptionPane.showConfirmDialog(null, "Fechar Conta?","Fechamento de Conta", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION){
+            try {
+            ConsumoRN consumoRN = new ConsumoRN();
+            String id_mesa = this.getIdMesa();
+            
+            //remove a mesa e seu consumo do banco de dados
+            if(consumoRN.fecharConta(id_mesa) == false){
+                JOptionPane.showMessageDialog(null, "Erro ao fechar Conta");
+            }else{
+                this.removerTodosElementosTabelaConsumo();
+                this.jComboBoxNomeMesa.setSelectedIndex(0);
+            }
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Erro de comunicação com o servidor.");
+
+        }
+        }
+    }//GEN-LAST:event_jButtonFecharContaActionPerformed
     
     /**
      * @param args the command line arguments
@@ -305,5 +331,10 @@ public class InicioCaixa extends javax.swing.JFrame {
         }
         //---------------
     }
+
+    private String getIdMesa() {
+        return this.jComboBoxNomeMesa.getSelectedItem().toString();
+    }
+
 
 }

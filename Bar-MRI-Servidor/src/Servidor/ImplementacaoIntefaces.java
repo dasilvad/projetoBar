@@ -97,6 +97,12 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
         return consumoPER.buscarConsumo(id_mesa);
     }
 
+    @Override
+    public boolean fecharConta(String id_mesa) throws RemoteException {
+        ConsumoPER consumoPER = new ConsumoPER();
+        return consumoPER.fecharConta(id_mesa);
+    }
+
  
 
 

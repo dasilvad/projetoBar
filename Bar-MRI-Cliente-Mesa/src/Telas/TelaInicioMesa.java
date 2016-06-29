@@ -110,6 +110,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelNomeMesa = new javax.swing.JLabel();
         jButtonHistoricoConsumo = new javax.swing.JButton();
         jLabelTotal = new javax.swing.JLabel();
+        jButtonPedirConta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1140, 620));
@@ -262,6 +263,14 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelTotal.setText("Total: 0");
         getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, -1, -1));
 
+        jButtonPedirConta.setText("Pedir Conta");
+        jButtonPedirConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPedirContaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonPedirConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 550, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -369,6 +378,10 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonHistoricoConsumoActionPerformed
 
+    private void jButtonPedirContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirContaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonPedirContaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -409,6 +422,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private javax.swing.JButton jButtonFinalizarPedido;
     private javax.swing.JButton jButtonHistoricoConsumo;
     private javax.swing.JButton jButtonIncluir;
+    private javax.swing.JButton jButtonPedirConta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelCardapio;
     private javax.swing.JLabel jLabelNomeMesa;

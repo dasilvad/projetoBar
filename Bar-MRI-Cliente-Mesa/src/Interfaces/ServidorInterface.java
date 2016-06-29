@@ -36,4 +36,6 @@ public interface ServidorInterface extends Remote {
     public ArrayList<String> buscarMesas() throws RemoteException;
 
     public ArrayList<Consumo> buscarConsumo(String id_mesa) throws RemoteException;
+
+    public boolean fecharConta(String id_mesa) throws RemoteException;
 }

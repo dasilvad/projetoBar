@@ -64,5 +64,18 @@ public class ConsumoPER {
         }
         return lista;
     }
+
+    public boolean fecharConta(String id_mesa) {
+        try{
+            PreparedStatement pst;
+            con=Connect.getInstace().connectDB();
+            String sql= "delete from CONSUMO where id_mesa = '"+id_mesa+"'";        
+            pst=con.prepareStatement(sql);
+            pst.executeUpdate();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
     
 }

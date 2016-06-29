@@ -25,5 +25,10 @@ public class ConsumoPER{
         MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
         return m.conectar().buscarConsumo(id_mesa);
     }
+
+    public boolean fecharConta(String id_mesa) throws RemoteException {
+        MetodoRemotoDoServidor m = new MetodoRemotoDoServidor();
+        return m.conectar().fecharConta(id_mesa);
+    }
     
 }

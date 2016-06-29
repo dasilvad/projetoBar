@@ -25,5 +25,9 @@ public class ConsumoRN {
         ConsumoPER consumoPER = new ConsumoPER();
         return consumoPER.buscarConsumo(id_mesa);
     }
+
+    public boolean fecharConta(String id_mesa) throws RemoteException {
+        return new ConsumoPER().fecharConta(id_mesa);
+    }
     
 }
