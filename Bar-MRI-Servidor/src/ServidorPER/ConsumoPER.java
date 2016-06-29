@@ -69,11 +69,19 @@ public class ConsumoPER {
         try{
             PreparedStatement pst;
             con=Connect.getInstace().connectDB();
-            String sql= "delete from CONSUMO where id_mesa = '"+id_mesa+"'";        
+            String sql= "delete from CONSUMO where id_mesa = '"+id_mesa+"'";
             pst=con.prepareStatement(sql);
             pst.executeUpdate();
+            
+            sql= "delete from MESA where id_mesa = '"+id_mesa+"'";
+            pst=con.prepareStatement(sql);
+            pst.executeUpdate();
+            
+            
+            
             return true;
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return false;
         }
     }

@@ -29,15 +29,20 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     private DefaultTableModel modelBebida;
     private DefaultTableModel modelComida;
     private DefaultTableModel modelPedido;
-    private String usuario;
+    private String usuario = null;
     private ArrayList<ItemPedido> pedidoAtual;
     private ArrayList<ItemPedido> historicoConsumo;
     private ArrayList<Produto> cardapio;
+    private boolean fezPedido = false;
+    private final LoginMesa telaLogin;
     /**
      * Creates new form TelaInicioMesa
      */
-    public TelaInicioMesa() {
+    public TelaInicioMesa(LoginMesa telaLogin) {
         initComponents();
+        
+        this.telaLogin = telaLogin;
+        
         this.modelBebida = new DefaultTableModel();
         modelBebida.addColumn("Bebida");
         modelBebida.addColumn("Preco");
@@ -112,7 +117,8 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelTotal = new javax.swing.JLabel();
         jButtonPedirConta = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1010, 639));
         setPreferredSize(new java.awt.Dimension(1140, 620));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -171,13 +177,13 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPaneCardapio, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 68, 438, 330));
 
-        jButtonIncluir.setText("Pedir");
+        jButtonIncluir.setText("Adicionar ao Pedido");
         jButtonIncluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonIncluirActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonIncluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 430, 70, 40));
+        getContentPane().add(jButtonIncluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 430, 190, 40));
 
         jLabelQuantidade.setText("Quantidade:");
         getContentPane().add(jLabelQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 440, -1, -1));
@@ -263,13 +269,13 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelTotal.setText("Total: 0");
         getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, -1, -1));
 
-        jButtonPedirConta.setText("Pedir Conta");
+        jButtonPedirConta.setText("Fechar Conta");
         jButtonPedirConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPedirContaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonPedirConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 550, -1, -1));
+        getContentPane().add(jButtonPedirConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 540, 120, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -338,10 +344,15 @@ public class TelaInicioMesa extends javax.swing.JFrame {
            return;
         }
         
-        if (this.cadastrarMesa() == false){
-            JOptionPane.showMessageDialog(null, "Erro ao Finalizar Pedido. Mesa nao foi cadastrada!");
-            return;
+        if (this.fezPedido == false){
+            if (this.cadastrarMesa() == false){
+                JOptionPane.showMessageDialog(null, "Erro ao Finalizar Pedido.");
+                return;
+            }else{
+                this.fezPedido = true;
+            }
         }
+        
         this.atualizarHistoricoConsumo();
         this.imprimirPedidos();
                 
@@ -379,7 +390,12 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonHistoricoConsumoActionPerformed
 
     private void jButtonPedirContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPedirContaActionPerformed
-        // TODO add your handling code here:
+        int option = JOptionPane.showConfirmDialog(null, "Fechar Conta?","Fechamento de Conta", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION){
+            JOptionPane.showMessageDialog(null, "Obrigado, Volte Sempre! Dirija-se ao caixa");
+            this.telaLogin.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButtonPedirContaActionPerformed
 
     /**

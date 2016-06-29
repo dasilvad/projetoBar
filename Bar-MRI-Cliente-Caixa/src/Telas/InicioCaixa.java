@@ -72,7 +72,7 @@ public class InicioCaixa extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(982, 622));
-        setPreferredSize(new java.awt.Dimension(830, 750));
+        setPreferredSize(new java.awt.Dimension(830, 665));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTablePedido.setModel(new javax.swing.table.DefaultTableModel(
@@ -103,19 +103,19 @@ public class InicioCaixa extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTablePedido);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 100, 490, 370));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 490, 370));
 
         jLabelNomeMesa.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabelNomeMesa.setText("Mesa ");
-        getContentPane().add(jLabelNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, -1));
+        getContentPane().add(jLabelNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabel1.setText("Items Pedidos");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, -1, -1));
 
         jLabelTotal.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
         jLabelTotal.setText("Total: 0");
-        getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 500, -1, -1));
+        getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 500, -1, -1));
 
         jComboBoxNomeMesa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione" }));
         jComboBoxNomeMesa.addActionListener(new java.awt.event.ActionListener() {
@@ -128,7 +128,7 @@ public class InicioCaixa extends javax.swing.JFrame {
                 jComboBoxNomeMesaFocusGained(evt);
             }
         });
-        getContentPane().add(jComboBoxNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, -1, -1));
+        getContentPane().add(jComboBoxNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, -1, -1));
 
         jButtonFecharConta.setText("Fechar Conta");
         jButtonFecharConta.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +136,7 @@ public class InicioCaixa extends javax.swing.JFrame {
                 jButtonFecharContaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonFecharConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 560, 120, 50));
+        getContentPane().add(jButtonFecharConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 560, 120, 50));
 
         jMenuEstoque.setText("Estoque");
 

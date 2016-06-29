@@ -101,7 +101,7 @@ public class LoginMesa extends javax.swing.JFrame {
         LoginRN loginRN = new LoginRN();
         try {
             if (loginRN.logar(usuario)){
-                TelaInicioMesa telaInicioMesa = new TelaInicioMesa();
+                TelaInicioMesa telaInicioMesa = new TelaInicioMesa(this);
                 telaInicioMesa.setUsuario(usuario);
                 telaInicioMesa.setVisible(true);
                 this.setVisible(false);
