@@ -1,0 +1,270 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.13
+-- Dumped by pg_dump version 9.3.13
+-- Started on 2016-06-29 22:39:07 BRT
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 1 (class 3079 OID 11789)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2000 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 175 (class 1259 OID 33150)
+-- Name: consumo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE consumo (
+    id_mesa character varying(100) NOT NULL,
+    id_produto integer NOT NULL,
+    quantidade integer
+);
+
+
+ALTER TABLE public.consumo OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 33148)
+-- Name: consumo_id_produto_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE consumo_id_produto_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.consumo_id_produto_seq OWNER TO postgres;
+
+--
+-- TOC entry 2001 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: consumo_id_produto_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE consumo_id_produto_seq OWNED BY consumo.id_produto;
+
+
+--
+-- TOC entry 173 (class 1259 OID 33143)
+-- Name: mesa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE mesa (
+    id_mesa character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.mesa OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 33137)
+-- Name: produto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE produto (
+    id_produto integer NOT NULL,
+    quantidade integer,
+    nome character varying(100),
+    categoria character varying(10),
+    preco_venda real,
+    status character varying(10)
+);
+
+
+ALTER TABLE public.produto OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 33135)
+-- Name: produto_id_produto_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE produto_id_produto_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.produto_id_produto_seq OWNER TO postgres;
+
+--
+-- TOC entry 2002 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: produto_id_produto_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE produto_id_produto_seq OWNED BY produto.id_produto;
+
+
+--
+-- TOC entry 1872 (class 2604 OID 33153)
+-- Name: id_produto; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY consumo ALTER COLUMN id_produto SET DEFAULT nextval('consumo_id_produto_seq'::regclass);
+
+
+--
+-- TOC entry 1871 (class 2604 OID 33140)
+-- Name: id_produto; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY produto ALTER COLUMN id_produto SET DEFAULT nextval('produto_id_produto_seq'::regclass);
+
+
+--
+-- TOC entry 1992 (class 0 OID 33150)
+-- Dependencies: 175
+-- Data for Name: consumo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY consumo (id_mesa, id_produto, quantidade) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2003 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: consumo_id_produto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('consumo_id_produto_seq', 1, false);
+
+
+--
+-- TOC entry 1990 (class 0 OID 33143)
+-- Dependencies: 173
+-- Data for Name: mesa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY mesa (id_mesa) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1989 (class 0 OID 33137)
+-- Dependencies: 172
+-- Data for Name: produto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY produto (id_produto, quantidade, nome, categoria, preco_venda, status) FROM stdin;
+2	25	Tampico	Bebida	3	ativo
+3	25	Suco de Laranja	Bebida	2	ativo
+1	40	Coca Cola 2l	Bebida	6.69999981	ativo
+4	50	Cerveja Stella garrafa	Bebida	6	ativo
+5	50	Batata Frita Grande	Comida	17	ativo
+6	35	Pastel de Frango	Comida	5	ativo
+7	40	Hot dog	Comida	5	ativo
+8	50	Coxinha	Comida	3.5	ativo
+9	50	Paçoca	Comida	1	inativo
+10	25	File de Tilápia	Comida	22	ativo
+11	60	Cachaça 51 2L	Bebida	10	ativo
+12	120	Chope 400 ml	Bebida	6	ativo
+13	34	Guaraná cristalina 2L	Bebida	3	ativo
+14	120	Cerveja Budweiser Lata	Bebida	4	ativo
+\.
+
+
+--
+-- TOC entry 2004 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: produto_id_produto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('produto_id_produto_seq', 14, true);
+
+
+--
+-- TOC entry 1878 (class 2606 OID 33155)
+-- Name: consumo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY consumo
+    ADD CONSTRAINT consumo_pkey PRIMARY KEY (id_mesa, id_produto);
+
+
+--
+-- TOC entry 1876 (class 2606 OID 33147)
+-- Name: mesa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY mesa
+    ADD CONSTRAINT mesa_pkey PRIMARY KEY (id_mesa);
+
+
+--
+-- TOC entry 1874 (class 2606 OID 33142)
+-- Name: produto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY produto
+    ADD CONSTRAINT produto_pkey PRIMARY KEY (id_produto);
+
+
+--
+-- TOC entry 1879 (class 2606 OID 33156)
+-- Name: consumo_id_mesa_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY consumo
+    ADD CONSTRAINT consumo_id_mesa_fkey FOREIGN KEY (id_mesa) REFERENCES mesa(id_mesa);
+
+
+--
+-- TOC entry 1880 (class 2606 OID 33161)
+-- Name: consumo_id_produto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY consumo
+    ADD CONSTRAINT consumo_id_produto_fkey FOREIGN KEY (id_produto) REFERENCES produto(id_produto);
+
+
+--
+-- TOC entry 1999 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-06-29 22:39:07 BRT
+
+--
+-- PostgreSQL database dump complete
+--
+
