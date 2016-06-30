@@ -9,9 +9,12 @@ import ServidorPER.LoginPER;
 import ServidorPER.MesaPER;
 import ServidorPER.PedidoPER;
 import ServidorPER.ProdutoPER;
+import Telas.TelaServidor;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /*
@@ -26,16 +29,24 @@ import java.util.ArrayList;
 
 // Classe responsável pela implementação dos métodos remotos definidos pela Interface
 public class ImplementacaoIntefaces extends UnicastRemoteObject implements ServidorInterface {
+    TelaServidor telaServidor;
     
-    public ImplementacaoIntefaces() throws RemoteException {
+    public ImplementacaoIntefaces(TelaServidor telaServidor) throws RemoteException {
         
         super();
+        this.telaServidor = telaServidor;
     }    
 
     @Override
     public boolean atualizarProduto(Produto produto) throws RemoteException {
         ProdutoPER produtoPER = new ProdutoPER();
-        return produtoPER.atualizarProduto(produto);
+        boolean retorno = produtoPER.atualizarProduto(produto);
+        
+        if (retorno){
+            this.telaServidor.mostrarMensagemNaTela("Usuário: Caixa, Descrição: Reabastecimento de Estoque, Data: "+getDataAtual());
+        }
+        
+        return retorno;
     }
 
     @Override
@@ -46,7 +57,12 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
     @Override
     public int inserirProdutoNoBanco(Produto produto) {
         ProdutoPER produtoPER = new ProdutoPER();
-        return produtoPER.inserirProduto(produto);
+        int retorno = produtoPER.inserirProduto(produto);
+        
+        if (retorno != -1 ){
+            this.telaServidor.mostrarMensagemNaTela("Usuário: Caixa, Descrição: Cadastro de Produto, Data: "+getDataAtual());
+        }
+        return retorno;
     }
 
     @Override
@@ -70,7 +86,14 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
     @Override
     public boolean fazerPedido(ArrayList<ItemPedido> pedido, String usuario) throws RemoteException {
         PedidoPER pedidoPER = new PedidoPER();
-        return pedidoPER.fazerPedido(pedido, usuario);
+        
+        boolean retorno = pedidoPER.fazerPedido(pedido, usuario);
+        
+        if (retorno){
+            this.telaServidor.mostrarMensagemNaTela("Usuário: "+usuario+" Descrição: Pedido, Data: "+getDataAtual());
+        }
+        
+        return retorno;
     }
 
     @Override
@@ -102,9 +125,9 @@ public class ImplementacaoIntefaces extends UnicastRemoteObject implements Servi
         ConsumoPER consumoPER = new ConsumoPER();
         return consumoPER.fecharConta(id_mesa);
     }
-
- 
-
-
-   
+    
+    public String getDataAtual(){
+             String dataEhora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) ;
+             return dataEhora;
+    }
 }

@@ -5,6 +5,7 @@
  */
 package ServidorPER;
 
+
 import PacotePrincipal.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +20,7 @@ public class LoginPER {
     private Connection con=null;
     
     public boolean logar(String usuario) {
+        
         PreparedStatement pst;
         ResultSet rs;
         
@@ -31,6 +33,9 @@ public class LoginPER {
             if (rs.next()){//usuario ja existe
                 return false;
             }
+           
+           
+            
             return true;
         }catch (Exception e){
             return false;            
