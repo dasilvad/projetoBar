@@ -34,6 +34,7 @@ public class TelaServidor extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextPaneMensagems.setEditable(false);
         jScrollPane1.setViewportView(jTextPaneMensagems);
 
         jLabel2.setText("Servidor");

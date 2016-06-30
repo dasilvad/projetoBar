@@ -67,7 +67,7 @@ public class ProdutoPER {
         try{
             PreparedStatement pst;
             con=Connect.getInstace().connectDB();
-            String sql= "delete from produto where id_produto = "+id_produto;        
+            String sql= "update produto set status = 'inativo' where id_produto = "+id_produto;        
             pst=con.prepareStatement(sql);
             pst.executeUpdate();
             return true;
