@@ -1,4 +1,4 @@
--- Geração de Modelo físico
+ï»¿-- GeraÃ§Ã£o de Modelo fÃ­sico
 -- Sql ANSI 2003 - brModelo.
 
 
@@ -15,15 +15,14 @@ status varchar(10)
 --status: ativo/inativo
 
 CREATE TABLE Mesa (
-id_mesa integer PRIMARY KEY
+id_mesa varchar(100) PRIMARY KEY
 );
 
 CREATE TABLE Consumo (
-id_mesa integer,
+id_mesa varchar(100),
 id_produto serial,
 quantidade integer,
 PRIMARY KEY(id_mesa,id_produto),
 FOREIGN KEY(id_mesa) REFERENCES Mesa (id_mesa),
 FOREIGN KEY(id_produto) REFERENCES Produto (id_produto)
 );
-
