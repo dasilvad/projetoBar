@@ -42,7 +42,7 @@ public class InicioCaixa extends javax.swing.JFrame {
         
         
         this.buscarMesas();
-        
+        this.jButtonFecharConta.requestFocus();
         //this.mostrarHistoricoNaTela();
         //this.calcularTotalDoPedido();
         
@@ -130,6 +130,7 @@ public class InicioCaixa extends javax.swing.JFrame {
         });
         getContentPane().add(jComboBoxNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, -1, -1));
 
+        jButtonFecharConta.setBackground(new java.awt.Color(120, 180, 125));
         jButtonFecharConta.setText("Fechar Conta");
         jButtonFecharConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -315,13 +316,14 @@ public class InicioCaixa extends javax.swing.JFrame {
             }else if (mesas == null){
                 JOptionPane.showMessageDialog(null, "Erro ao buscar mesas no banco de dados.");
             }else{//nenhuma mesa no banco de dados
-                JOptionPane.showMessageDialog(null,"Nenhuma mesa Encontrada!");
+                //JOptionPane.showMessageDialog(null,"Nenhuma mesa Encontrada!");
             }
             
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao buscar Mesas no Servidor");
             return;
         }
+        
     }
 
     private void removerTodosElementosTabelaConsumo() {

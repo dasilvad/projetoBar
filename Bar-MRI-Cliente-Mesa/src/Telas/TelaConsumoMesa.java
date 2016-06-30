@@ -109,6 +109,7 @@ public class TelaConsumoMesa extends javax.swing.JFrame {
         jLabelNomeMesa.setText("Mesa: ");
         getContentPane().add(jLabelNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, -1, -1));
 
+        jButtonVoltar.setBackground(new java.awt.Color(120, 180, 125));
         jButtonVoltar.setText("Voltar");
         jButtonVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -177,6 +177,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPaneCardapio, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 68, 438, 330));
 
+        jButtonIncluir.setBackground(new java.awt.Color(120, 180, 125));
         jButtonIncluir.setText("Adicionar ao Pedido");
         jButtonIncluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,6 +234,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(568, 98, -1, 300));
 
+        jButtonFinalizarPedido.setBackground(new java.awt.Color(120, 180, 125));
         jButtonFinalizarPedido.setText("Finalizar Pedido");
         jButtonFinalizarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -245,6 +247,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelSubtotal.setText("Subtotal Pedido: 0");
         getContentPane().add(jLabelSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 500, -1, -1));
 
+        jButtonDeletar.setBackground(new java.awt.Color(120, 180, 125));
         jButtonDeletar.setText("Deletar");
         jButtonDeletar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,6 +260,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelNomeMesa.setText("Mesa: ");
         getContentPane().add(jLabelNomeMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 12, -1, -1));
 
+        jButtonHistoricoConsumo.setBackground(new java.awt.Color(120, 180, 125));
         jButtonHistoricoConsumo.setText("Historico Consumo");
         jButtonHistoricoConsumo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,6 +273,7 @@ public class TelaInicioMesa extends javax.swing.JFrame {
         jLabelTotal.setText("Total: 0");
         getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, -1, -1));
 
+        jButtonPedirConta.setBackground(new java.awt.Color(120, 180, 125));
         jButtonPedirConta.setText("Fechar Conta");
         jButtonPedirConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
