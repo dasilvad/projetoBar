@@ -72,7 +72,6 @@ public class ProdutoPER {
             pst.executeUpdate();
             return true;
         }catch (Exception e){
-            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -87,7 +86,7 @@ public class ProdutoPER {
             pst.executeUpdate();
             return true;
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            
             return false;
         }
     }

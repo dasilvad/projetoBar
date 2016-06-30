@@ -18,7 +18,7 @@ public class MesaPER {
         try{
             return m.conectar().cadastrarMesa(usuario);
         }catch(Exception e){
-            System.out.println(e.getMessage());
+            
             return false;
         }
     }

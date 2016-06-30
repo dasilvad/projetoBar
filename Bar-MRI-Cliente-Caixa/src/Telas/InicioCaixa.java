@@ -118,6 +118,14 @@ public class InicioCaixa extends javax.swing.JFrame {
         getContentPane().add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 500, -1, -1));
 
         jComboBoxNomeMesa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione" }));
+        jComboBoxNomeMesa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jComboBoxNomeMesaMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jComboBoxNomeMesaMouseReleased(evt);
+            }
+        });
         jComboBoxNomeMesa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxNomeMesaActionPerformed(evt);
@@ -172,8 +180,7 @@ public class InicioCaixa extends javax.swing.JFrame {
                 String id_mesa = this.getIdMesa();
                 listConsumo = consumoRN.buscarConsumo(id_mesa);
                 if (listConsumo.size() > 0){
-                    System.out.println("Selecionou elemento: "+id_mesa);
-                    System.out.println("quantidade: "+listConsumo.get(0).getQuantidade());
+                   
                     this.mostrarConsumoNaTela(listConsumo);
                     this.calcularTotalDoPedido();
                 }
@@ -206,7 +213,8 @@ public class InicioCaixa extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Erro ao fechar Conta");
             }else{
                 this.removerTodosElementosTabelaConsumo();
-                this.jComboBoxNomeMesa.setSelectedIndex(0);
+                this.buscarMesas();
+                //this.jComboBoxNomeMesa.setSelectedIndex(0);
             }
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(null, "Erro de comunicação com o servidor.");
@@ -214,6 +222,14 @@ public class InicioCaixa extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_jButtonFecharContaActionPerformed
+
+    private void jComboBoxNomeMesaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBoxNomeMesaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxNomeMesaMouseClicked
+
+    private void jComboBoxNomeMesaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBoxNomeMesaMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxNomeMesaMouseReleased
     
     /**
      * @param args the command line arguments
@@ -295,7 +311,6 @@ public class InicioCaixa extends javax.swing.JFrame {
 
     private void mostrarMesasNaTela(ArrayList<String> mesas) {
         Iterator it = mesas.iterator();
-        this.jComboBoxNomeMesa.removeAllItems();
         
         while(it.hasNext()){
             String m = (String) it.next();
@@ -305,12 +320,14 @@ public class InicioCaixa extends javax.swing.JFrame {
     
     private void buscarMesas(){
         ConsumoRN consumoRN = new ConsumoRN();
-         ArrayList<String> mesas;
-         
+        ArrayList<String> mesas;
+        this.jComboBoxNomeMesa.removeAllItems();
+        //this.jComboBoxNomeMesa.add("Selecione");
+        this.jComboBoxNomeMesa.insertItemAt("Selecione", 0);
+        this.jComboBoxNomeMesa.setSelectedIndex(0);
         try {
             mesas = consumoRN.buscarMesas();
-            if (mesas.size() > 1){
-                mesas.add(0, "Selecione");
+            if (mesas.size() >= 1){
                 this.mostrarMesasNaTela(mesas);
                  
             }else if (mesas == null){

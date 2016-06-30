@@ -540,14 +540,14 @@ public class TelaInicioMesa extends javax.swing.JFrame {
     }
 
     private void imprimirPedidos() {
-        System.out.println("Pedido Atual");
+       
         for (int i=0; i < pedidoAtual.size(); i++){
             System.out.println(pedidoAtual.get(i).getId_produto() + " quatde: "+pedidoAtual.get(i).getQuantidade());
         }
         System.out.println("historico consumo");
         for (int i=0; i < historicoConsumo.size(); i++){
             
-            System.out.println(historicoConsumo.get(i).getId_produto() + " quatde: "+historicoConsumo.get(i).getQuantidade());
+            
         }
     }
     /*cadastra se nao houver nenhum consumo relacionado a mesa. Portanto esse metodo executa somente uma vez. Esse metodo e chamado quando um pedido e finalizado.*/

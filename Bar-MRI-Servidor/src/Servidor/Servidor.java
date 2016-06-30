@@ -36,7 +36,7 @@ public class Servidor {
             
         } catch (Exception e) {
             
-            System.out.println("Erro: " + e.getMessage());
+            
         }
     }
     public static void main(String[] args){
